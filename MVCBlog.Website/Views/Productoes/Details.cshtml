@@ -1,0 +1,75 @@
+﻿@model MVCBlog.Core.Entities.Producto
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Producto</h4>
+        <hr />
+        <div class="col-md-12">
+            <dl class="dl-horizontal col-md-6">
+                <dt>
+                   Tipo
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.TipoProducto.Description)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Estado)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Estado)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Unidad)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Unidad)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Modified)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Modified)
+                </dd>
+
+            </dl>
+            <dl class="dl-horizontal col-md-6">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Photo)
+                </dt>
+
+                <dd>
+                    @*@Html.DisplayFor(model => model.Photo)*@
+                    <img src="@Url.Content(Model.RelativePath + Model.Photo)" alt="sin foto" title="@Html.DisplayFor(model => model.Photo)" height="180" width="180" />
+
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

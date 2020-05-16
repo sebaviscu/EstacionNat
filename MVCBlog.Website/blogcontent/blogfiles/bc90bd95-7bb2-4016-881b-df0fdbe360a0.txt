@@ -1,0 +1,16 @@
+Maratón Acuático 2020
+
+Texto corto:
+
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;quot;Times New Roman&amp;quot;, Times, serif; font-size: 18px;">Cada a&ntilde;o, en el marco de la competencia se realiza este evento en el Balneario La Florida y est&aacute; destinado a los alumnos pertenecientes a &nbsp;los Centros de Desarrollo Deportivo de Nataci&oacute;n.</p>
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;quot;Times New Roman&amp;quot;, Times, serif; font-size: 18px;">La propuesta tiene como objetivo ampliar el desarrollo alcanzado por ni&ntilde;os, y adolescentes en las clases de nataci&oacute;n, incorporando la experiencia del nado en aguas del R&iacute;o Paran&aacute;. Son acompa&ntilde;ados por las m&aacute;ximas figuras internacionales que participan en el Marat&oacute;n Acu&aacute;tico Internacional Ciudad de Rosario.</p>
+
+
+Texto largo:
+
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;amp;amp; font-size: 18px;">esde el a&ntilde;o 1995 las aguas del r&iacute;o Paran&aacute; son escenario de una de las competencias m&aacute;s atractivas del Circuito Internacional de Nataci&oacute;n de Aguas Abiertas: el Marat&oacute;n Acu&aacute;tico Internacional Ciudad de Rosario.</p>
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;amp;amp; font-size: 18px;">La competencia forma parte del selecto grupo de competencias que componen la Copa del Mundo de Nataci&oacute;n de Aguas Abiertas de la&nbsp;<a style="box-sizing: border-box; border: none; background-color: transparent; color: #005cc6; text-decoration-line: none; font-weight: 700;" href="http://www.fina.org/" target="_blank">Federaci&oacute;n Internacional de Nataci&oacute;n</a>, halago que comparte con otras importantes ciudades del mundo.</p>
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;amp;amp; font-size: 18px;">La actividad convoca todos los a&ntilde;os a miles de espectadores en nuestra ribera del r&iacute;o Paran&aacute;, en la Rambla Catalunya, donde una multitud tributa un merecido reconocimiento a los mejores nadadores del mundo de la especialidad.</p>
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;amp;amp; font-size: 18px;">Desde el 2007, acompa&ntilde;ando las variantes que derivaron en la incorporaci&oacute;n de las aguas abiertas como disciplina ol&iacute;mpica, el recorrido se realiza &iacute;ntegramente frente a las playas de la ciudad de Rosario, con el marco imponente, imagen del progreso de nuestros tiempos, del puente Rosario - Victoria.</p>
+<p style="box-sizing: border-box; border: none; margin: 0px 0px 10px; color: #58595b; font-family: Roboto, Arial, &amp;amp;amp; font-size: 18px;">El circuito tiene una extensi&oacute;n de casi 2 km en d&oacute;nde una multitud de decenas de miles de espectadores que se congrega en las playas de la costa rosarina no se cansa de acompa&ntilde;ar con su aliento a cada uno de quienes protagonizan el evento deportivo m&aacute;s importante del verano de nuestra ciudad.</p>
+
