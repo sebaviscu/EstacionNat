@@ -25,6 +25,9 @@ namespace MVCBlog.Website.Controllers
     /// </summary>
     public partial class BlogController : Controller
     {
+        private DatabaseContext db = new DatabaseContext();
+
+
         /// <summary>
         /// Number of <see cref="BlogEntry">BlogEntries</see> per page.
         /// </summary>
@@ -107,6 +110,8 @@ namespace MVCBlog.Website.Controllers
             model.CurrentPage = page;
             model.Tag = tag;
             model.Search = search;
+
+            model.Productos = db.Productoes.ToList();
 
             return this.View(model);
         }

@@ -56,10 +56,9 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2"> Precio</label>
-                        <div class="col-md-3">
-                            <label class="control-label">$ @Model.PrecioActual.ToString()</label>
+                        <div class="col-md-4">
+                            $ @Html.EditorFor(model => model.PrecioActual, new { htmlAttributes = new { @class = "form-control", type = "number", min = "0", step = "1"} })
                         </div>
-                        <a class="btn btn-default">Cambiar</a>
                     </div>
 
 
@@ -81,6 +80,7 @@
                         <label class="control-label col-md-2">@Common.File jpg/jpeg:</label>
                         <div class="col-md-10">
                             <input type="file" name="image" id="image" class="form-control" />
+                            <br />
                             <img src="@Url.Content(Model.RelativePath + Model.Photo)" alt="sin foto" title="@Html.DisplayFor(model => model.Photo)" height="180" width="180" />
                         </div>
                     </div>
@@ -96,23 +96,3 @@
 </body>
 </html>
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>

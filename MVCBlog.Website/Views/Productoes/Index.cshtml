@@ -9,16 +9,24 @@
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
+    <div>
+        <button class="btn btn-primary col-md-1" id="btnMassiveEdit" onclick="location.href='@Url.Action("Create", "Productoes")'">
+            <span class="glyphicon glyphicon-plus btn-xs"></span>
+            Nuevo
+        </button>
+        <button class="btn btn-success col-md-offset-9" id="btnMassiveEdit" onclick="location.href='@Url.Action("MassiveEdit", "Productoes")'">
+            <span class="glyphicon glyphicon-list-alt btn-xs"></span>
+            Edicion Masiva
+        </button>
+    </div>
+    <br />
+    <table class="table col-md-12">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TipoProducto.Description)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.TipoProducto.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Estado)
@@ -26,7 +34,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Unidad)
             </th>
-           
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioActual)
+            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Modified)
             </th>
@@ -37,16 +48,19 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TipoProducto.Description)
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.TipoProducto.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Estado)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Unidad)
+                </td>
+                <td>
+                    $ @Html.DisplayFor(modelItem => item.PrecioActual)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Modified)

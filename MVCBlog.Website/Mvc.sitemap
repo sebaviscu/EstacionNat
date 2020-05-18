@@ -6,9 +6,6 @@
   <mvcSiteMapNode title="$resources:SiteMapLocalizations,Blog_Index" controller="Blog" action="Index" preservedRouteParameters="tag,page">
 
     
-    <mvcSiteMapNode title="$resources:SiteMapLocalizations,About_Index" controller="About" action="Index"/>
-    <!--<mvcSiteMapNode title="$resources:SiteMapLocalizations,Imprint_Index" controller="Imprint" action="Index"/>-->
-    
     <mvcSiteMapNode title="$resources:SiteMapLocalizations,Administration_Index" controller="Administration" action="Index" roles="ADMIN,OFFICE,COACH">
       <mvcSiteMapNode title="$resources:SiteMapLocalizations,Blog_Entry" action="EditBlogEntry"/>
       <!--<mvcSiteMapNode title="$resources:SiteMapLocalizations,Administration_Pingback" action="PerformPingbacks"/>-->
@@ -24,7 +21,6 @@
     <mvcSiteMapNode title="Productos" clickable="false" roles="ADMIN,OFFICE">
       <mvcSiteMapNode title="Productos" controller="Productoes" action="Index" slug="about-us" />
       <mvcSiteMapNode title="Tipos Productos" controller="TipoProductoes" action="Index" slug="about-us" roles="ADMIN"/>
-
     </mvcSiteMapNode>
     
   </mvcSiteMapNode>

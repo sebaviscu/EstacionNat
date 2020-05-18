@@ -14,7 +14,8 @@ namespace MVCBlog.Core.Entities
         public string Description { get; set; }
         public EstadoProducto Estado { get; set; }
 
-        public Unidad Unidad { get; set; }
+        [Display(Name = "Presentacion")]
+        public Presentacion Unidad { get; set; }
 
 
         [Display(Name = nameof(Labels.Photo), ResourceType = typeof(Labels))]
@@ -23,6 +24,8 @@ namespace MVCBlog.Core.Entities
         //[Display(Name = nameof(Labels.Category), ResourceType = typeof(Labels))]
         public Guid? TipoProductoId { get; set; }
         public virtual TipoProducto TipoProducto { get; set; }
+
+        public int PrecioActual { get; set; }
 
         [NotMapped]
         public string RelativePath
@@ -43,8 +46,12 @@ namespace MVCBlog.Core.Entities
             }
         }
 
-        [NotMapped]
-        public decimal PrecioActual { get; set; }
 
+        [NotMapped]
+        public int PrecioFuturo { get; set; }
+
+        [Display(Name = "Precios Historicos")]
+        [NotMapped]
+        public List<PrecioHistorico> HistoricPrice { get; set; }
     }
 }

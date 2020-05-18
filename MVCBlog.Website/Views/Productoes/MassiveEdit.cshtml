@@ -1,0 +1,101 @@
+﻿@model IEnumerable<MVCBlog.Core.Entities.Producto>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+</head>
+<body>
+
+    <table class="table col-md-12">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Unidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioActual)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr class="rowPrdos" id-prod="@item.Id">
+                <td>
+                    @Html.EditorFor(modelItem => item.Description, new { htmlAttributes = new { @class = "form-control colDescr" } })
+                </td>
+                <td>
+                    @Html.EnumDropDownListFor(modelItem => item.Estado, htmlAttributes: new { @class = "form-control colEstado" })
+                    @Html.ValidationMessageFor(modelItem => item.Estado, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.EnumDropDownListFor(modelItem => item.Unidad, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(modelItem => item.Unidad, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.PrecioActual, new { htmlAttributes = new { @class = "form-control colPrecio", @type = "number", min = "0", step = "1" } })
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="form-group">
+
+            <button id="btnSave" class="btn btn-primary">Save</button>
+    </div>
+
+</body>
+</html>
+
+
+@section ScriptContent {
+    <script type="text/javascript" src="~/Scripts/onlyNumeric.js"></script>
+    <script>
+
+        $("#btnSave").click(() => {
+            var productosList = [];
+
+            $(".rowPrdos").each(function (index) {
+                var description = $(this).children("td").eq(0).find('input').val();
+                var estado = $(this).children("td").eq(1).find('select').val();
+                var unidad = $(this).children("td").eq(2).find('select').val();
+                var precioActual = $(this).children("td").eq(3).find('input').val();
+                var id = this.getAttribute("id-prod");
+
+                var item = {}
+                item["Id"] = id;
+                item["Description"] = description;
+                item["Estado"] = estado;
+                item["Unidad"] = unidad;
+                item["PrecioActual"] = precioActual;
+
+                productosList.push(item);
+            })
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=UTF-8",
+                url: "/Productoes/SaveMassiveEdit/",
+                dataType: "json",
+                data: JSON.stringify(productosList),
+                success: function (result) {
+                    if (result.redirectUrl !== undefined) {
+                        window.location.replace(result.redirectUrl);
+                    } else {
+                        alert("Error");
+                    }
+                }
+            });
+
+        });
+
+
+    </script>
+}

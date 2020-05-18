@@ -1,4 +1,5 @@
 ﻿using MVCBlog.Core.Entities;
+using System.Collections.Generic;
 
 namespace MVCBlog.Website.Models.OutputModels.Blog
 {
@@ -31,5 +32,7 @@ namespace MVCBlog.Website.Models.OutputModels.Blog
         /// Gets or sets the currently selected tag.
         /// </summary>
         public string Tag { get; set; }
+
+        public List<Producto> Productos { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace MVCBlog.Core.Entities
         NoDisponible
     }
 
-    public enum Unidad
+    public enum Presentacion
     {
         Unidad,
         Peso
