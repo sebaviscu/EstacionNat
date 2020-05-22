@@ -1,0 +1,190 @@
+﻿@model MVCBlog.Website.Models.ProductosViewModel
+
+@if (!Model.Productos.Any())
+{
+    @Common.NoData
+}
+else
+{
+    foreach (var p in Model.Productos)
+    {
+
+        var image = string.IsNullOrEmpty(p.Photo) ? "Content/Images/sin-imagen.png" : Url.Content(p.RelativePath + p.Photo);
+        var presentacion = p.Unidad == MVCBlog.Core.Entities.Presentacion.Peso ? "Kg" : "Unidad";
+
+        <div class="col-md-3">
+            <div class="product-col">
+                <div class="image">
+                    <img style="width: 150px; height:150px;" src="@image" alt="@p.Description">
+                </div>
+                <div class="caption">
+                    <div style="text-align: left;">
+                        <span class="price" style="text-align: left;">$ @p.PrecioActual</span><strong style="font-size:14px">/@presentacion</strong>
+                    </div>
+                    <h4 style="text-align: left;"><small>@p.Description</small></h4>
+                    <div><button type="button" class="btn btn-main btn-xs text-uppercase btnAddProduct" data-id="@p.Id" onclick="AddProduct(this);"><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div id="modalContainer"></div>
+
+<div class="modal fade" id="modalAddProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="descripcionModal"></h3>
+            </div>
+            <div class="panel-body">
+                @{
+                    <div class="col-md-12">
+                        <div class="image col-md-3">
+                            <img style="width: 170px; height:170px;" id="imgProductModal">
+                        </div>
+                        <div class="caption col-md-offset-1 col-md-8 form-group">
+                            <div style="text-align: left;" class="col-md-12 form-group ">
+                                <div class="col-md-8">
+                                    <span class="price" style="font-size:32px; text-align: left;" id="priceModal"></span><strong style="font-size:14px" id="presentacionModal"></strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-default btn-sm">Por Unidad</button>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group " >
+                                <label class="col-md-4">Cantidad </label>
+                                <input class="col-md-3" id="cantModal" type="number" name="peso" />
+                                <label class="col-md-5" style="font:6px;" id="lblTotal"></label>
+                            </div>
+                            <div class="form-group col-md-12 form-group ">
+                                <label class="col-md-4">Comentario</label>
+                                <textarea class="col-md-12" id="txtComentario" style="max-height:55px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnAddProd" onclick="btnAddProduct(this);">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function AddProduct(elem) {
+        var id = $(elem).attr('data-id');
+        $.ajax({
+            type: "POST",
+            url: "/Productoes/GetProduct",
+            data: '{id: "' + id + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (result) {
+
+                document.getElementById("cantModal").value = 0;
+                document.getElementById("lblTotal").innerHTML = "";
+                document.getElementById("txtComentario").value = "";
+
+                var p = JSON.parse(result);
+                var precop = "$" + p.PrecioActual;
+                var presentacion = "";
+                var fotoFullPath = p.RelativePath + p.Photo;
+                var image = p.Photo == "null" ? "Content/Images/sin-imagen.png" : fotoFullPath;
+                var min = 0;
+                var value = 0;
+                var setp = 0;
+                var desc = $.trim(p.Description);
+
+                if (p.Unidad == "1") {
+                    presentacion = " / Kg";
+                    min = 0.5;
+                    value = 0.5;
+                    setp = 0.5;
+                }
+                else {
+                    presentacion = " / Unidad";
+                    min = 1;
+                    value = 1;
+                    setp = 1;
+                }
+
+                $("#modalAddProduct").modal("show");
+
+                $('#imgProductModal').attr('src', image);
+                $('#imgProductModal').attr('alt', p.Description);
+                $("#priceModal").text(precop);
+                $("#presentacionModal").text(presentacion);
+                $("#descripcionModal").text(p.Description);
+                document.getElementById("cantModal").setAttribute("min", min);
+                document.getElementById("cantModal").setAttribute("value", value);
+                document.getElementById("cantModal").setAttribute("setp", setp);
+
+                document.getElementById("btnAddProd").setAttribute("data-id", id);
+
+                let tot = 0;
+                let cant = 0;
+                $("#cantModal").change(function () {
+                    var pActual = p.PrecioActual;
+                    cant = $("#cantModal").val();
+                    tot = pActual * cant;
+                    var conc = "Total: $ " + tot;
+                    document.getElementById("lblTotal").innerHTML = conc;
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+    function btnAddProduct(elem) {
+
+        let pedProd = {
+            ProductoId: $(elem).attr('data-id'),
+            Comentario: $("#txtComentario").val(),
+            Cantidad: parseFloat($("#cantModal").val(), 10)
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/CarritoCompras/SetPedidoProducto",
+            data: JSON.stringify(pedProd),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $('#carritoPartialView').html(response);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+        $("#modalAddProduct").modal("hide");
+    }
+
+
+</script>
+
+<style>
+    .product-col {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #e0e0e0;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 15px;
+        text-align: center;
+        position: relative;
+        height: 275px
+    }
+</style>

@@ -1,0 +1,82 @@
+﻿@model MVCBlog.Core.Entities.Pedido
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Pedido</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalCharge)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TotalCharge)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FormaDePago)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FormaDePago)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.HoraEntrega)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.HoraEntrega)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Estado)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Estado)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.UsuarioId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.UsuarioId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Modified)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Modified)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

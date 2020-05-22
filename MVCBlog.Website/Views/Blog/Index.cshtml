@@ -3,102 +3,119 @@
 @{
     Layout = "~/Views/Shared/Sidebar.Layout.cshtml";
 }
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-@section HeaderContent {
-    <link rel="canonical" href="@this.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")" />
-}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+</head>
+<body>
+    <div class="col-md-3">
 
-@section HeroUnit {
-    @if (!this.Request.IsAuthenticated && !this.Model.Entries.Any())
-    {
-        <div class="jumbotron">
-            <h1>Estacion natural</h1>
-            <p>@Common.HeroText</p>
-            <p>@Html.ActionLink(@Common.Login, MVC.Administration.Index(), new { @class = "btn btn-primary btn-large" })</p>
-        </div>
-    }
-}
+        <h3 id="carritoUsuario" usuario-id="@Model.UsuarioId" class="side-heading"><i class="fa fa-shopping-cart"></i> Mi carrito</h3>
 
-@if (!string.IsNullOrEmpty(this.Model.Tag) || !string.IsNullOrEmpty(this.Model.Search))
-{
-    <div class="well">
-        @if (!string.IsNullOrEmpty(this.Model.Tag))
-        {
-            <i class="glyphicon glyphicon-tag"></i>
-            @Common.Tag<text>: @this.Model.Tag</text>
-        }
-        else if (!string.IsNullOrEmpty(this.Model.Search))
-        {
-            <i class="glyphicon glyphicon-search"></i>
-            @Common.Search<text>: @this.Model.Search</text>
-        }
-    </div>
-}
+        <div id="carritoPartialView"></div>
 
-@if (!this.Model.Entries.Any())
-{
-    @Common.NoData
-}
-else
-{
+        <hr>
 
-    @*foreach (var entry in this.Model.Entries)
-        {
-            <h2>@Html.ActionLink(entry.Header, entry.Url)</h2>
-            @:<article>
-                Html.RenderPartial(MVC.Blog.Views._BlogEntryHeaderControl, entry);
-                @Html.Raw(entry.ShortContent);
-                <p>@Html.ActionLink(Common.Continue, entry.Url)</p>
-            @:</article>
-        }*@
+        <h3 class="side-heading">Categorías</h3>
+        <div class="list-group">
 
+            <a class="list-group-item list-group-item-action">Mostrar todos</a>
 
-
-
-    <table class="table">
-
-        @{
-            int i = 0;
-            var tr = new HtmlString("<tr>");
-            var trEnd = new HtmlString("</tr>");
-
-            foreach (var p in this.Model.Productos)
-            {
-                i++;
-                var image = string.IsNullOrEmpty(p.Photo) ? "Content/Images/sin-imagen.png" : Url.Content(p.RelativePath + p.Photo);
-                var presentacion = p.Unidad == MVCBlog.Core.Entities.Presentacion.Peso ? "Kg" : "Unidad";
-                if (i == 4)
+            @{
+                foreach (var tp in Model.TiposProductos)
                 {
-                    new HtmlString("<tr>");
-                }
-
-                <div class="col-md-3">
-                    <div class=" product-col" style=" text-align: center;position: relative; height:290px">
-                        <div class="image">
-                            <img style="width: 150px; height:150px" src="@image" alt="@p.Description">
-                        </div>
-                        <div class="caption">
-                            <div  style="text-align: left;">
-                                <span class="price" style="text-align: left;">$ @p.PrecioActual</span><strong style="font-size:14px">/@presentacion</strong>
-                            </div>
-                            <h4 style="text-align: left;"><small>@p.Description</small></h4>
-                            <div id="boton_carrito48" @*onclick="AgregarProducto('48');"*@><button type="button" class="btn btn-main btn-xs text-uppercase "><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
-                        </div>
-                    </div>
-                </div>
-
-                if (i == 6)
-                {
-                    @trEnd;
+                    <a href="#" class="list-group-item list-group-item-action" data-id="@tp.Id">@tp.Description</a>
                 }
             }
-        }
-    </table>
+        </div>
 
-    Html.RenderPartial(MVC.Blog.Views._PagingControl, this.Model);
-}
+    </div>
+
+    <div class="col-md-9">
+        <div id="list"></div>
+    </div>
+
+    <script type="text/javascript">
+
+        $.ajax({
+            type: "POST",
+            url: "/CarritoCompras/Grill",
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $('#list').html(response);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/CarritoCompras/GetPedidoPendiente",
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $('#carritoPartialView').html(response);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+    </script>
+
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        $('.list-group-item').on('click', function () {
+            var id = $(this).attr('data-id');
+
+            $.ajax({
+                type: "POST",
+                url: "/CarritoCompras/Grill",
+                data: '{idTipoProd: "' + id + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#list').html(response);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        });
+    });
+</script>
 
 <style>
+    .side-heading {
+        margin-top: 0;
+        margin-bottom: 20px;
+        padding: 12px 20px;
+        color: #ec2f2f;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background: #fff;
+        border: 1px solid #e4e4e4;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
 
     .price {
         padding-right: 5px;
@@ -110,27 +127,34 @@ else
         background-color: #ec2f2f;
     }
 
-        .btn-main:hover,
-        .btn-main:focus,
-        .btn-main:active,
-        .btn-main.active {
-            background-color: #303030;
+    .btn-black {
+        background-color: #303030;
+    }
+
+        .btn-black:hover,
+        .btn-black:focus,
+        .btn-black:active,
+        .btn-black.active {
+            background-color: #ec2f2f;
         }
 
-        .btn-main,
-        .btn-main:hover,
-        .btn-main:focus,
-        .btn-main:active,
-        .btn-main.active {
-            color: #fff;
-        }
+    .btn-main:hover,
+    .btn-main:focus,
+    .btn-main:active,
+    .btn-main.active {
+        background-color: #303030;
+    }
 
-    .product-col {
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #e0e0e0;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius: 15px;
+    .btn-black,
+    .btn-black:hover,
+    .btn-black:focus,
+    .btn-black:active,
+    .btn-black.active,
+    .btn-main,
+    .btn-main:hover,
+    .btn-main:focus,
+    .btn-main:active,
+    .btn-main.active {
+        color: #fff;
     }
 </style>

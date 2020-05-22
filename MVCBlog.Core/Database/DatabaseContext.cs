@@ -88,5 +88,9 @@ namespace MVCBlog.Core.Database
         public System.Data.Entity.DbSet<MVCBlog.Core.Entities.TipoProducto> TipoProductoes { get; set; }
 
         public System.Data.Entity.DbSet<MVCBlog.Core.Entities.Producto> Productoes { get; set; }
+
+        public System.Data.Entity.DbSet<MVCBlog.Core.Entities.Pedido> Pedidoes { get; set; }
+        public System.Data.Entity.DbSet<MVCBlog.Core.Entities.PedidoProducto> PedidosProductos { get; set; }
+
     }
 }

@@ -312,11 +312,13 @@
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AspNetUsersController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\CarritoComprasController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ImprintController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PedidoesController.cs" />
     <Compile Include="Controllers\ProductoesController.cs" />
     <Compile Include="Controllers\ProvinceController.cs" />
     <Compile Include="Controllers\TipoProductoesController.cs" />
@@ -348,6 +350,7 @@
     <Compile Include="Models\OutputModels\Society\ServiceInfViewModels.cs" />
     <Compile Include="Models\OutputModels\Society\SocInfViewModels.cs" />
     <Compile Include="Models\OutputModels\Society\UserListViewModels.cs" />
+    <Compile Include="Models\ProductosViewModel.cs" />
     <Compile Include="PhotoController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -572,6 +575,14 @@
     <Content Include="Views\Productoes\Edit.cshtml" />
     <Content Include="Views\Productoes\Index.cshtml" />
     <Content Include="Views\Productoes\MassiveEdit.cshtml" />
+    <Content Include="Views\CarritoCompras\_ListaProductos.cshtml" />
+    <Content Include="Views\CarritoCompras\Index.cshtml" />
+    <Content Include="Views\Pedidoes\Create.cshtml" />
+    <Content Include="Views\Pedidoes\Delete.cshtml" />
+    <Content Include="Views\Pedidoes\Details.cshtml" />
+    <Content Include="Views\Pedidoes\Edit.cshtml" />
+    <Content Include="Views\Pedidoes\Index.cshtml" />
+    <Content Include="Views\CarritoCompras\_Carrito.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

@@ -18,6 +18,12 @@ namespace MVCBlog.Core.Entities
         NoDisponible
     }
 
+    public enum FormaDePago
+    {
+        Efectivo,
+        Tarjeta
+    }
+
     public enum Presentacion
     {
         Unidad,

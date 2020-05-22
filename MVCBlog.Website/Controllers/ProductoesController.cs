@@ -108,7 +108,6 @@ namespace MVCBlog.Website.Controllers
                     };
                     db.PreciosHistoricos.Add(newPrice);
                     db.SaveChanges();
-
                 }
 
                 return RedirectToAction("Index");
@@ -305,6 +304,11 @@ namespace MVCBlog.Website.Controllers
             return Json(new { redirectUrl = Url.Action("Index", "Productoes") });
         }
 
+        public JsonResult GetProduct(Guid? id)
+        {
+            Producto producto = db.Productoes.Include(p => p.TipoProducto).FirstOrDefault(_ => _.Id == id);
 
+            return Json(producto);
+        }
     }
 }

@@ -8,31 +8,11 @@ namespace MVCBlog.Website.Models.OutputModels.Blog
     /// </summary>
     public class IndexModel
     {
-        /// <summary>
-        /// Gets or sets the entries.
-        /// </summary>
-        public BlogEntry[] Entries { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current page.
-        /// </summary>
-        public int? CurrentPage { get; set; }
+        public string UsuarioId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the number total pages.
-        /// </summary>
-        public int TotalPages { get; set; }
+        public List<TipoProducto> TiposProductos { get; set; }
 
-        /// <summary>
-        /// Gets or sets the search term.
-        /// </summary>
-        public string Search { get; set; }
-
-        /// <summary>
-        /// Gets or sets the currently selected tag.
-        /// </summary>
-        public string Tag { get; set; }
-
-        public List<Producto> Productos { get; set; }
+        public List<PedidoProducto> ProductosPedidos { get; set; }
     }
 }

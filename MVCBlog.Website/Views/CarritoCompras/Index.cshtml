@@ -1,0 +1,50 @@
+﻿@model List<MVCBlog.Website.Models.ProductosViewModel>
+
+@if (!thisModel.Productos.Any())
+{
+    @Common.NoData
+}
+else
+{
+    <table class="table">
+
+        @{
+            int i = 0;
+            var tr = new HtmlString("<tr>");
+            var trEnd = new HtmlString("</tr>");
+
+            foreach (var p in this.Model.Productos)
+            {
+                i++;
+                var image = string.IsNullOrEmpty(p.Photo) ? "Content/Images/sin-imagen.png" : Url.Content(p.RelativePath + p.Photo);
+                var presentacion = p.Unidad == MVCBlog.Core.Entities.Presentacion.Peso ? "Kg" : "Unidad";
+                if (i == 4)
+                {
+                    new HtmlString("<tr>");
+                }
+
+                <div class="col-md-3">
+                    <div class=" product-col">
+                        <div class="image">
+                            <img style="width: 150px; height:150px" src="@image" alt="@p.Description">
+                        </div>
+                        <div class="caption">
+                            <div style="text-align: left;">
+                                <span class="price" style="text-align: left;">$ @p.PrecioActual</span><strong style="font-size:14px">/@presentacion</strong>
+                            </div>
+                            <h4 style="text-align: left;"><small>@p.Description</small></h4>
+                            <div ><button type="button" class="btn btn-main btn-xs text-uppercase "><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
+                        </div>
+                    </div>
+                </div>
+
+                if (i == 6)
+                {
+                    @trEnd;
+                }
+            }
+        }
+    </table>
+
+    Html.RenderPartial(MVC.Blog.Views._PagingControl, this.Model);
+}

@@ -1,0 +1,79 @@
+﻿@model MVCBlog.Core.Entities.Pedido
+
+<table class="table table-condensed table-hover" id="discountTable">
+    <thead>
+    <th style="max-width:90px; text-align:left;">Descr.</th>
+    <th style="text-align:center; min-width:70px">Cant.</th>
+    <th style="text-align:center">Sub Total</th>
+    <th style="width: 20px; text-align:right"></th>
+    </thead>
+    <tbody>
+        @if (Model.ProductosPedidos.Any())
+        {
+            foreach (var p in Model.ProductosPedidos.OrderBy(_ => _.Producto.Description))
+            {
+                var presentacion = p.Producto.Unidad == MVCBlog.Core.Entities.Presentacion.Peso ? "Kg" : "U.";
+
+                <tr class="tableProducts">
+                    <td>@p.Producto.Description.Trim()</td>
+                    <td>@p.Cantidad @presentacion</td>
+                    <td style="text-align:right">$@p.TotalParcial</td>
+                    <td>
+                        <button class="btn btn-sm" onclick="removeProduct(this)" data-id="@p.Id" data-toggle="tooltip" title="Remover">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+
+<div>
+    <table class="table total">
+        <tbody>
+            <tr>
+                <td class="text-right"><h5><strong>TOTAL $</strong><strong id="total_carrito"> @Model.TotalCharge</strong></h5></td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="btn pull-right btn-black" data-id="@Model.Id">
+        <i class="glyphicon glyphicon-list"></i> Ver detalle
+    </a>
+    <div style="clear:both"></div>
+</div>
+
+
+<script>
+
+
+    function removeProduct(elem) {
+        var idProdPed = $(elem).attr('data-id');
+
+        $.ajax({
+            type: "POST",
+            url: "/CarritoCompras/RemoveProduct",
+            data: '{idProdPed: "' + idProdPed + '" }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (result) {
+                $('#carritoPartialView').html(result);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+
+</script>  
+
+<style>
+    .tableProducts [class*="col-"] {
+    padding: 0;
+}
+</style>

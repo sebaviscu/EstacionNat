@@ -1,0 +1,88 @@
+﻿@model MVCBlog.Core.Entities.Pedido
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Pedido</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalCharge)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.TotalCharge)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FormaDePago)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FormaDePago)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.HoraEntrega)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.HoraEntrega)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Estado)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Estado)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.UsuarioId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.UsuarioId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Modified)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Modified)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>
