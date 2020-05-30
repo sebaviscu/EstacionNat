@@ -65,7 +65,7 @@ namespace MVCBlog.Website.Controllers
             {
 
                 var userId = User.Identity.GetUserId();
-                pedido = db.Pedidoes.FirstOrDefault(_ => _.UsuarioId == userId && _.Estado == EstadoPedido.Pendiente);
+                pedido = db.Pedidoes.FirstOrDefault(_ => _.UsuarioId == userId && _.Estado == EstadoPedido.Creado);
                 if (pedido == null) pedido = new Pedido(userId);
 
                 var prodoriginal = db.Productoes.FirstOrDefault(_ => _.Id == pedProd.ProductoId);
@@ -114,7 +114,7 @@ namespace MVCBlog.Website.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Identity.GetUserId();
-                var pedidoUser = db.Pedidoes.Where(_ => _.UsuarioId == userId && _.Estado == EstadoPedido.Pendiente).FirstOrDefault();
+                var pedidoUser = db.Pedidoes.Where(_ => _.UsuarioId == userId && _.Estado == EstadoPedido.Creado).FirstOrDefault();
                 if (pedidoUser != null)
                 {
                     pedido = pedidoUser;
@@ -128,8 +128,8 @@ namespace MVCBlog.Website.Controllers
 
         public ActionResult RemoveProduct(Guid idProdPed)
         {
-            var prodPed = db.PedidosProductos.Include(a => a.Producto).Include(s => s.Pedido).FirstOrDefault(_ => _.Id == idProdPed);
-            var listProductosPedido = db.PedidosProductos.Include(s => s.Producto).Where(_ => _.PedidoId == prodPed.PedidoId).ToList();
+            var prodPed = db.PedidosProductos.Include(s => s.Pedido).Include(a => a.Producto).FirstOrDefault(_ => _.Id == idProdPed);
+            var listProductosPedido = db.PedidosProductos.Where(_ => _.PedidoId == prodPed.PedidoId).ToList();
 
             var pedido = prodPed.Pedido;
             listProductosPedido.Remove(prodPed);
@@ -144,6 +144,42 @@ namespace MVCBlog.Website.Controllers
             return this.PartialView("_Carrito", pedido);
         }
 
+        public ActionResult RemovePedido(string idUser)
+        {
+            var pedidoUser = db.Pedidoes.Where(_ => _.UsuarioId == idUser && _.Estado == EstadoPedido.Creado).FirstOrDefault();
+            if (pedidoUser != null)
+            {
+                var listProductosPedido = db.PedidosProductos.Include(s => s.Producto).Where(_ => _.PedidoId == pedidoUser.Id).ToList();
 
+                foreach (var p in listProductosPedido)
+                {
+                    db.Entry(p).State = EntityState.Deleted;
+                }
+
+                db.Entry(pedidoUser).State = EntityState.Deleted;
+                db.SaveChanges();
+            }
+            var pedido = new Pedido(idUser);
+
+            return this.PartialView("_Carrito", pedido);
+        }
+
+        public ActionResult FinalizarPedido(Guid idPedido)
+        {
+            var pedidoUser = db.Pedidoes.Include(s => s.Usuario).Where(_ => _.Id == idPedido && _.Estado == EstadoPedido.Creado).FirstOrDefault();
+            if (pedidoUser != null)
+            {
+                var listProductosPedido = db.PedidosProductos.Include(s => s.Producto).Where(_ => _.PedidoId == pedidoUser.Id).ToList();
+
+                if (listProductosPedido.Count == 0)
+                    return this.PartialView("_Carrito", pedidoUser);
+
+                pedidoUser.ProductosPedidos = listProductosPedido;
+
+                return View("FinalizarPedido", pedidoUser);
+            }
+
+            return this.PartialView("_Carrito", pedidoUser);
+        }
     }
 }

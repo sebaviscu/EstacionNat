@@ -15,7 +15,7 @@ namespace MVCBlog.Core.Entities
         }
         public Pedido()
         {
-            Estado = EstadoPedido.Pendiente;
+            Estado = EstadoPedido.Creado;
             ProductosPedidos = new List<PedidoProducto>();
         }
 

@@ -15,7 +15,6 @@ namespace MVCBlog.Core.Entities
         public Guid? ProductoId { get; set; }
         public virtual Producto Producto { get; set; }
         public decimal Cantidad { get; set; }
-        public string Comentario { get; set; }
 
         public decimal TotalParcial { get; set; }
     }

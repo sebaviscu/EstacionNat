@@ -8,6 +8,7 @@ namespace MVCBlog.Core.Entities
 {
     public enum EstadoPedido
     {
+        Creado,
         Pendiente,
         Terminado
     }

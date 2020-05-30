@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCBlog.Core.Database;
 using MVCBlog.Core.Entities;
+using MVCBlog.Website.Models.EstacionNatural;
+using OfficeOpenXml;
 
 namespace MVCBlog.Website.Controllers
 {
@@ -18,9 +22,7 @@ namespace MVCBlog.Website.Controllers
         // GET: Productoes
         public ActionResult Index()
         {
-            var productoes = db.Productoes.Include(p => p.TipoProducto);
-
-            return View(productoes.ToList());
+            return View();
         }
 
         // GET: Productoes/Details/5
@@ -309,6 +311,88 @@ namespace MVCBlog.Website.Controllers
             Producto producto = db.Productoes.Include(p => p.TipoProducto).FirstOrDefault(_ => _.Id == id);
 
             return Json(producto);
+        }
+
+
+        public ActionResult Search(FiltroProductos viewModel)
+        {
+            var productoes = GetProductsByFilter(viewModel);
+
+            return this.PartialView("_list", productoes);
+        }
+
+        private IQueryable<Producto> GetProductsByFilter(FiltroProductos viewModel)
+        {
+            var productoes = db.Productoes.Include(p => p.TipoProducto);
+
+            if (!string.IsNullOrEmpty(viewModel.Descripcion))
+                productoes = productoes.Where(_ => _.Description.Contains(viewModel.Descripcion));
+
+            if (viewModel.TipoProducto != null && viewModel.TipoProducto != Guid.Empty)
+                productoes = productoes.Where(_ => _.TipoProductoId == viewModel.TipoProducto);
+
+            return productoes.OrderBy(_ => _.Description);
+        }
+
+        readonly string descrFile = "Productos";
+
+        [HttpPost]
+        public virtual JsonResult Export(FiltroProductos viewModel)
+        {
+            var result = GetProductsByFilter(viewModel);
+            string pathName = ConfigurationManager.AppSettings["ExportFilesPath"] + descrFile + ".xlsx";
+            string serverMapPath = Server.MapPath("~/" + pathName);
+
+            FileInfo file = new FileInfo(serverMapPath);
+
+            if (file.Exists)
+            {
+                file.Delete();
+                file = new FileInfo(serverMapPath);
+            }
+
+            using (var package = new ExcelPackage(file))
+            {
+                var ws = package.Workbook.Worksheets.Add(descrFile);
+
+                var j = 1;
+                var cell = ws.Cells;
+
+                cell[1, 1].Value = "Producto";
+                cell[1, 2].Value = "Tipo";
+                cell[1, 3].Value = "Estado";
+                cell[1, 4].Value = "Precio Actual";
+                cell[1, 5].Value = "Presentacion";
+                cell[1, 6].Value = "Ultima Modificacion";
+                var i = 2;
+                foreach (var p in result)
+                {
+                    j = 1;
+                    cell[i, j++].Value = p.Description.Trim();
+                    cell[i, j++].Value = p.TipoProducto.Description;
+                    cell[i, j++].Value = p.Estado;
+                    cell[i, j++].Value = p.PrecioActual;
+                    cell[i, j++].Value = p.Unidad;
+                    cell[i, j++].Value = p.Modified.HasValue ? p.Modified.Value.ToShortDateString() : string.Empty;
+
+                    i++;
+                }
+                package.Save();
+            }
+
+            return Json(new
+            {
+                result = serverMapPath,
+                success = true
+            });
+        }
+
+        public virtual FileResult Download(string file)
+        {
+            byte[] fileBytes = System.IO.File.ReadAllBytes(file);
+            var fileDownloadName = descrFile + ".xlsx";
+            const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            return File(fileBytes, contentType, fileDownloadName);
         }
     }
 }

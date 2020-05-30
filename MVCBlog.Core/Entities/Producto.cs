@@ -21,10 +21,11 @@ namespace MVCBlog.Core.Entities
         [Display(Name = nameof(Labels.Photo), ResourceType = typeof(Labels))]
         public string Photo { get; set; }
 
-        //[Display(Name = nameof(Labels.Category), ResourceType = typeof(Labels))]
+        [Display(Name = "Tipo de Producto")]
         public Guid? TipoProductoId { get; set; }
         public virtual TipoProducto TipoProducto { get; set; }
 
+        [Display(Name = "Precio")]
         public int PrecioActual { get; set; }
 
         [NotMapped]

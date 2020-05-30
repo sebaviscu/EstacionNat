@@ -20,12 +20,12 @@
         <h3 class="side-heading">Categorías</h3>
         <div class="list-group">
 
-            <a class="list-group-item list-group-item-action">Mostrar todos</a>
+            <a  href="#" class="list-group-item list-group-item-action"><strong> Mostrar todos</strong></a>
 
             @{
                 foreach (var tp in Model.TiposProductos)
                 {
-                    <a href="#" class="list-group-item list-group-item-action" data-id="@tp.Id">@tp.Description</a>
+                    <a href="#" class="list-group-item list-group-item-action" data-id="@tp.Id"> <i class="glyphicon glyphicon-chevron-right"></i> @tp.Description</a>
                 }
             }
         </div>
@@ -41,7 +41,7 @@
         $.ajax({
             type: "POST",
             url: "/CarritoCompras/Grill",
-            contentType: "application/json; charset=utf-8",
+            contentType: "application/json; charset=UTF-8",
             dataType: "html",
             success: function (response) {
                 $('#list').html(response);

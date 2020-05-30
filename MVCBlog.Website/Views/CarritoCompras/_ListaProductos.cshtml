@@ -18,11 +18,22 @@ else
                     <img style="width: 150px; height:150px;" src="@image" alt="@p.Description">
                 </div>
                 <div class="caption">
-                    <div style="text-align: left;">
-                        <span class="price" style="text-align: left;">$ @p.PrecioActual</span><strong style="font-size:14px">/@presentacion</strong>
-                    </div>
-                    <h4 style="text-align: left;"><small>@p.Description</small></h4>
-                    <div><button type="button" class="btn btn-main btn-xs text-uppercase btnAddProduct" data-id="@p.Id" onclick="AddProduct(this);"><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
+                    @{if (p.Estado == MVCBlog.Core.Entities.EstadoProducto.Disponible)
+                        {
+                            <div style="text-align: left;">
+                                <span class="price" style="text-align: left;">$ @p.PrecioActual</span><strong style="font-size:14px">/@presentacion</strong>
+                            </div>
+                            <h4 style="text-align: left;"><small>@p.Description</small></h4>
+                            <div><button type="button" class="btn btn-main btn-xs text-uppercase btnAddProduct" data-id="@p.Id" onclick="AddProduct(this);"><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
+                        }
+                        else
+                        {
+                            <br />
+                            <h4 style="text-align: center;"><small>@p.Description</small></h4>
+                            <br />
+                            <span class="label label-danger">No disponible</span>
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -53,14 +64,10 @@ else
                                     <button class="btn btn-default btn-sm">Por Unidad</button>
                                 </div>
                             </div>
-                            <div class="col-md-12 form-group " >
+                            <div class="col-md-12 form-group ">
                                 <label class="col-md-4">Cantidad </label>
                                 <input class="col-md-3" id="cantModal" type="number" name="peso" />
                                 <label class="col-md-5" style="font:6px;" id="lblTotal"></label>
-                            </div>
-                            <div class="form-group col-md-12 form-group ">
-                                <label class="col-md-4">Comentario</label>
-                                <textarea class="col-md-12" id="txtComentario" style="max-height:55px"></textarea>
                             </div>
                         </div>
                     </div>
@@ -75,7 +82,6 @@ else
 </div>
 
 <script>
-
     function AddProduct(elem) {
         var id = $(elem).attr('data-id');
         $.ajax({
@@ -88,7 +94,6 @@ else
 
                 document.getElementById("cantModal").value = 0;
                 document.getElementById("lblTotal").innerHTML = "";
-                document.getElementById("txtComentario").value = "";
 
                 var p = JSON.parse(result);
                 var precop = "$" + p.PrecioActual;
@@ -149,7 +154,6 @@ else
 
         let pedProd = {
             ProductoId: $(elem).attr('data-id'),
-            Comentario: $("#txtComentario").val(),
             Cantidad: parseFloat($("#cantModal").val(), 10)
         };
 
@@ -171,8 +175,6 @@ else
         });
         $("#modalAddProduct").modal("hide");
     }
-
-
 </script>
 
 <style>

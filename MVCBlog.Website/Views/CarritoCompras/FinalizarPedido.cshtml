@@ -1,0 +1,171 @@
+﻿@model MVCBlog.Core.Entities.Pedido
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+</head>
+<body>
+    <div class="form-group col-md-12 borde">
+        <div class="col-md-4 form-group">
+            <dd>
+                <strong>Nombre: </strong>
+                @Html.DisplayFor(model => model.Usuario.FullName)
+            </dd>
+            <br />
+            <dd>
+                <strong>Dirección: </strong>
+                @Html.DisplayFor(model => model.Usuario.Address)
+            </dd>
+            <br />
+            <dd>
+                <strong>Numero: </strong>
+                @Html.DisplayFor(model => model.Usuario.PhoneNumber)
+                <div style="float:right; margin-right:20px;">
+                    <button class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit btn-xs"></span>
+                        Editar
+                    </button>
+                </div>
+            </dd>
+        </div>
+
+        <div class="col-md-4">
+            <div>
+                <div style="margin-left:15px;">
+                    <strong>Forma de Pago</strong>
+                    @Html.EnumDropDownListFor(modelItem => Model.FormaDePago, htmlAttributes: new { @class = "form-control colEstado" })
+                    @Html.ValidationMessageFor(modelItem => Model.FormaDePago, "", new { @class = "text-danger" })
+                </div>
+                <div>
+                    <div class="col-md-6">
+                        <strong>Hora de entrega</strong>
+                        @Html.EditorFor(modelItem => Model.HoraEntrega, new { htmlAttributes = new { @class = "form-control colDescr" } })
+                    </div>
+                    <div class="col-md-6 checkbox">
+                        <label style="margin-top:10px;"><input type="checkbox" value="" id="loAntesPosible">Lo antes posible</label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <strong>Comentarios</strong>
+            @Html.TextAreaFor(modelItem => Model.Comentario, new { @class = "form-control", rows = "4" })
+        </div>
+    </div>
+
+    <table class="table col-md-12">
+        <tr>
+            <th style="width:15px;">
+            </th>
+            <th style="width:15px;">
+            </th>
+            <th>
+                <label>Producto</label>
+            </th>
+            <th>
+                <label>Precio</label>
+            </th>
+            <th>
+                <label>Cantidad</label>
+            </th>
+            <th>
+                <label>Subtotal</label>
+            </th>
+        </tr>
+
+        @foreach (var item in Model.ProductosPedidos)
+        {
+            <tr class="rowPrdos" id-prod="@item.Id">
+                <td>
+                    <a class="btn btn-sm" onclick="editarProducto(this)" data-id="@item.Id" data-toggle="tooltip" title="Editar Producto">
+                        <i class="glyphicon glyphicon-edit" style="color:blue"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-sm" onclick="removeProduct(this)" data-id="@item.Id" data-toggle="tooltip" title="Borrar Producto">
+                        <i class="glyphicon glyphicon-remove" style="color:red"></i>
+                    </a>
+                </td>
+                <td>
+                    @item.Producto.Description
+                </td>
+                <td>
+                    $ @item.Producto.PrecioActual
+                </td>
+                <td>
+                    @item.Cantidad
+                </td>
+                <td>
+                    $ @item.TotalParcial
+                </td>
+            </tr>
+        }
+    </table>
+    <div class="col-md-12">
+        <div style="float:right">
+            <label style="font-size:28px;">Total: $ @Model.TotalCharge</label>
+        </div>
+        <div style="float:left">
+            <button class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Blog")'">Seguir Comprando</button>
+            <button id="btnSave" class="btn btn-info" style="margin-left:15px;" onclick="TerminarPedido();">
+                Terminar Pedido
+                <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<div class="modal fade" id="modalFinalizarPedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="descripcionModal"></h3>
+            </div>
+            <div class="panel-body">
+
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btnSave" class="btn btn-success" style="margin-left:15px;" onclick="FinalizarPedido();">
+                    Finalizar Pedido
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function TerminarPedido() {
+
+        $("#modalFinalizarPedido").modal("show");
+
+    }
+
+</script>
+
+<style>
+    .borde {
+        border: 1px solid #e0e0e0;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 15px;
+        padding-top: 15px;
+    }
+</style>

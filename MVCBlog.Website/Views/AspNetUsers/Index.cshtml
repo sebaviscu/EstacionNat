@@ -62,12 +62,6 @@
 <br />
 
 <div id="list"></div>
-@if (Request.IsAuthenticated && User.IsInRole("ADMIN"))
-{
-    <button id="btnUpdate" class="btn btn-primary btn-sm" data-loading-text="@Common.Updating" onclick="updateCategories();"  data-toggle="tooltip" data-placement="right" title="Actualizar Categorias de Todos los Usuarios segun la Edad">
-        <span class="glyphicon glyphicon glyphicon-retweet"></span> @Common.Update @Common.Category
-    </button>
-}
 
 @section ScriptContent {
     <script type="text/javascript" src="~/Scripts/onlyNumeric.js"></script>

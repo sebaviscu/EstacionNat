@@ -51,6 +51,7 @@ namespace MVCBlog.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+                tipoProducto.Description = tipoProducto.Description.Trim();
                 tipoProducto.Id = Guid.NewGuid();
                 db.TipoProductoes.Add(tipoProducto);
                 tipoProducto.Created = DateTime.Now;
@@ -127,6 +128,20 @@ namespace MVCBlog.Website.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public JsonResult List()
+        {
+            var tipoProductos = db.TipoProductoes.ToList();
+            tipoProductos.Add(new TipoProducto() { Description = "", Id = Guid.Empty });
+            var jsonResultd = tipoProductos.OrderBy(_=>_.Description).Select(_ => new
+            {
+                id = _.Id,
+                descripcion = _.Description.Trim()
+            });
+
+            return Json(jsonResultd);
         }
     }
 }
