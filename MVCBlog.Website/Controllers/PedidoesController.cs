@@ -18,19 +18,21 @@ namespace MVCBlog.Website.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Pedidoes.ToList());
+            return View(db.Pedidoes.Include(s => s.Usuario).ToList());
         }
 
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            var pedido = new Pedido();
+            if (User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Pedido pedido = db.Pedidoes.Find(id);
-            if (pedido == null)
-            {
-                return HttpNotFound();
+                var pedidoUser = db.Pedidoes.Include(s => s.Usuario).FirstOrDefault(_ => _.Id == id);
+                if (pedidoUser != null)
+                {
+                    pedido = pedidoUser;
+                    var listProductosPedido = db.PedidosProductos.Include(s => s.Producto).Where(_ => _.PedidoId == pedido.Id).ToList();
+                    pedido.ProductosPedidos.AddRange(listProductosPedido);
+                }
             }
             return View(pedido);
         }
@@ -101,6 +103,13 @@ namespace MVCBlog.Website.Controllers
         public ActionResult DeleteConfirmed(Guid id)
         {
             Pedido pedido = db.Pedidoes.Find(id);
+            var listProductosPedido = db.PedidosProductos.Include(s => s.Producto).Where(_ => _.PedidoId == id).ToList();
+
+            foreach (var p in listProductosPedido)
+            {
+                db.Entry(p).State = EntityState.Deleted;
+            }
+
             db.Pedidoes.Remove(pedido);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -115,6 +124,11 @@ namespace MVCBlog.Website.Controllers
             base.Dispose(disposing);
         }
 
-     
+        public ActionResult ListaPedidos(string id)
+        {
+            var pedidos = db.Pedidoes.Where(_=>_.UsuarioId == id);
+
+            return View(pedidos.ToList());
+        }
     }
 }

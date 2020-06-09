@@ -1,23 +1,114 @@
 ﻿@using Microsoft.AspNet.Identity
 
-    <div>
-        <br />
+    <div style="float:right;">
         @if (Request.IsAuthenticated)
         {
             @*@Html.ActionLink(@Common.Management, MVC.Administration.Index())
             <text>|</text>
             @Html.ActionLink(@Common.Logout, MVC.Login.Logout())*@
 
-            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = @Common.Manage })
-                <text>|&nbsp;</text><a href="javascript:document.getElementById('logoutForm').submit()">@Common.Logout</a>
-            }
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">@User.Identity.Name <i class="glyphicon glyphicon-star" style="color:beige"></i></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="/Manage/Index">Mis Datos</a>
+                    <a href="/Pedidoes/ListaPedidos/?id=@User.Identity.GetUserId()"> Mis Pedidos</a>
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Cerrar Secion</a>
+                    }
+                </div>
+            </div>
         }
         else
         {
-            @Html.ActionLink(@Common.Login, MVC.Account.Login())
+            <a class="btn btn-success login" href="/Account/Login">Ingresar <i class="glyphicon glyphicon-user" style="color:beige"></i></a>
         }
 
     </div>
+
+
+<style>
+
+        .login {
+        margin-top: 5px;
+        background-color: #2980B9;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 10px;
+    }
+
+    .dropbtn {
+        margin-top: 5px;
+        background-color: #3498DB;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 10px;
+    }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #2980B9;
+        }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+    .dropdown a:hover {
+        background-color: #ddd;
+    }
+
+    .show {
+        display: block;
+    }
+</style>
+
+
+<script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>

@@ -41,7 +41,7 @@
                 </tr>
             </tbody>
         </table>
-        <a class="btn pull-right btn-black" data-id="@Model.Id"  onclick="location.href='@Url.Action("FinalizarPedido", "CarritoCompras",new { idPedido = Model.Id})'">
+        <a class="btn pull-right btn-black" id="btnVerDetalle" data-loading-text="Armando Pedido" onclick="location.href='@Url.Action("TerminarPedido", "CarritoCompras",new { idPedido = Model.Id})'">
             <i class="glyphicon glyphicon-list"></i> Ver detalle
         </a>
         <div style="clear:both"></div>
@@ -49,6 +49,10 @@
 }
 
 <script>
+    $("#btnVerDetalle").click(() => {
+        $("#btnVerDetalle").button("loading");
+    })
+
     function removeProduct(elem) {
         var idProdPed = $(elem).attr('data-id');
         $.ajax({

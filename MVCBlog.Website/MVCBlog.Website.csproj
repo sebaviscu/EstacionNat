@@ -578,14 +578,14 @@
     <Content Include="Views\Productoes\MassiveEdit.cshtml" />
     <Content Include="Views\CarritoCompras\_ListaProductos.cshtml" />
     <Content Include="Views\CarritoCompras\Index.cshtml" />
-    <Content Include="Views\Pedidoes\Create.cshtml" />
     <Content Include="Views\Pedidoes\Delete.cshtml" />
     <Content Include="Views\Pedidoes\Details.cshtml" />
-    <Content Include="Views\Pedidoes\Edit.cshtml" />
     <Content Include="Views\Pedidoes\Index.cshtml" />
     <Content Include="Views\CarritoCompras\_Carrito.cshtml" />
     <Content Include="Views\CarritoCompras\FinalizarPedido.cshtml" />
     <Content Include="Views\Productoes\_list.cshtml" />
+    <Content Include="Views\Productoes\_massiveEditList.cshtml" />
+    <Content Include="Views\Pedidoes\ListaPedidos.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

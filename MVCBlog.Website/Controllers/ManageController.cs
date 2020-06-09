@@ -66,7 +66,8 @@ namespace MVCBlog.Website.Controllers
             var userId = User.Identity.GetUserId();
 
             var user = db.AspNetUsers.FirstOrDefault(_ => _.Id == userId);
-          
+            var pedidos = db.Pedidoes.Where(_ => _.UsuarioId == userId).ToList();
+
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -75,7 +76,7 @@ namespace MVCBlog.Website.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 User = user,
-
+                Pedidos = pedidos
             };
             return View(model);
         }

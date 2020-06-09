@@ -1,9 +1,5 @@
 ﻿@model MVCBlog.Core.Entities.Pedido
 
-@{
-    Layout = null;
-}
-
 <!DOCTYPE html>
 
 <html>
@@ -12,70 +8,99 @@
     <title>Details</title>
 </head>
 <body>
-    <div>
-        <h4>Pedido</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalCharge)
-            </dt>
-    
+
+
+    <div class="form-group col-md-12 borde">
+        <div class="col-md-4 form-group">
             <dd>
-                @Html.DisplayFor(model => model.TotalCharge)
+                <strong>Nombre: </strong>
+                @Html.DisplayFor(model => model.Usuario.FullName)
             </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.FormaDePago)
-            </dt>
-    
+            <br />
             <dd>
-                @Html.DisplayFor(model => model.FormaDePago)
+                <strong>Dirección: </strong>
+                @Html.DisplayFor(model => model.Usuario.Address)
             </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.HoraEntrega)
-            </dt>
-    
+            <br />
             <dd>
-                @Html.DisplayFor(model => model.HoraEntrega)
+                <strong>Telefono: </strong>
+                @Html.DisplayFor(model => model.Usuario.PhoneNumber)
             </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Estado)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Estado)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.UsuarioId)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.UsuarioId)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Created)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Modified)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Modified)
-            </dd>
-    
-        </dl>
+        </div>
+
+        <div class="col-md-4">
+            <div>
+                <div>
+                    <strong>Forma de Pago</strong>
+                    @Html.DisplayFor(model => model.FormaDePago)
+                </div>
+                <br />
+                <div>
+                    <strong>Hora de entrega</strong>
+                    @Html.DisplayFor(model => model.HoraEntrega)
+                </div>
+                <br />
+                <div>
+                    <strong>Estado</strong>
+                    @Html.DisplayFor(model => model.Estado)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <strong>Comentarios</strong>
+            @Html.DisplayFor(model => model.Comentario)
+        </div>
     </div>
+
+    <table class="table col-md-12">
+        <tr>
+            <th>
+                <label>Producto</label>
+            </th>
+            <th>
+                <label>Precio</label>
+            </th>
+            <th>
+                <label>Cantidad</label>
+            </th>
+            <th>
+                <label>Subtotal</label>
+            </th>
+        </tr>
+
+        @foreach (var item in Model.ProductosPedidos)
+        {
+            <tr class="rowPrdos" id-prod="@item.Id">
+                <td>
+                    <span>
+                        @item.Producto.Description
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        $ @item.Producto.PrecioActual
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        @item.Cantidad
+                    </span>
+                </td>
+                <td>
+                    <span>
+                        $ @item.TotalParcial
+                    </span>
+                </td>
+            </tr>
+        }
+    </table>
+    <div class="col-md-12">
+        <div style="float:right">
+            <label style="font-size:20px;">Total: $ @Model.TotalCharge</label>
+        </div>
+    </div>
+
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
         @Html.ActionLink("Back to List", "Index")
     </p>
 </body>

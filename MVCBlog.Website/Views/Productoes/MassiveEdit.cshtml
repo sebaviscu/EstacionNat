@@ -1,101 +1,71 @@
-﻿@model IEnumerable<MVCBlog.Core.Entities.Producto>
-
-
-<!DOCTYPE html>
-
-<html>
-<head>
-
-</head>
-<body>
-
-    <table class="table col-md-12">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Unidad)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrecioActual)
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr class="rowPrdos" id-prod="@item.Id">
-                <td>
-                    @Html.EditorFor(modelItem => item.Description, new { htmlAttributes = new { @class = "form-control colDescr" } })
-                </td>
-                <td>
-                    @Html.EnumDropDownListFor(modelItem => item.Estado, htmlAttributes: new { @class = "form-control colEstado" })
-                    @Html.ValidationMessageFor(modelItem => item.Estado, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    @Html.EnumDropDownListFor(modelItem => item.Unidad, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(modelItem => item.Unidad, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    @Html.EditorFor(modelItem => item.PrecioActual, new { htmlAttributes = new { @class = "form-control colPrecio", @type = "number", min = "0", step = "1" } })
-                </td>
-            </tr>
-        }
-    </table>
-
-    <div class="form-group">
-        @Html.ActionLink("Volver", "Index")
-        <button id="btnSave" class="btn btn-primary">Save</button>
+﻿
+<div class="row">
+    <div class="form-group col-md-3">
+        <label>Descripcion</label>
+        <input class="form-control" id="txtDescr" type="text" name="descripcion" value="" />
     </div>
+    <div class="form-group  col-md-2">
+        <label>Tipo de Producto</label>
+        <select id="selectTipoProducto" class="form-control"></select>
+    </div>
+    <div class="col-md-3">
+        <div style="margin-top:25px;">
+            <button input id="btnSearch" type="submit" value="Buscar" class="btn btn-success" data-loading-text="Buscando" data-toggle="tooltip" data-placement="right" title="Buscar Productos" onclick="search();">
+                <span class="glyphicon glyphicon-search"></span> Buscar
+            </button>
+        </div>
+    </div>
+</div>
 
-</body>
-</html>
+<div id="list"></div>
 
+<script type="text/javascript" src="~/Scripts/onlyNumeric.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
 
-@section ScriptContent {
-    <script type="text/javascript" src="~/Scripts/onlyNumeric.js"></script>
-    <script>
-
-        $("#btnSave").click(() => {
-            var productosList = [];
-
-            $(".rowPrdos").each(function (index) {
-                var description = $(this).children("td").eq(0).find('input').val();
-                var estado = $(this).children("td").eq(1).find('select').val();
-                var unidad = $(this).children("td").eq(2).find('select').val();
-                var precioActual = $(this).children("td").eq(3).find('input').val();
-                var id = this.getAttribute("id-prod");
-
-                var item = {}
-                item["Id"] = id;
-                item["Description"] = description;
-                item["Estado"] = estado;
-                item["Unidad"] = unidad;
-                item["PrecioActual"] = precioActual;
-
-                productosList.push(item);
-            })
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=UTF-8",
-                url: "/Productoes/SaveMassiveEdit/",
-                dataType: "json",
-                data: JSON.stringify(productosList),
-                success: function (result) {
-                    if (result.redirectUrl !== undefined) {
-                        window.location.replace(result.redirectUrl);
-                    } else {
-                        alert("Error");
-                    }
-                }
+    $.ajax({
+        type: "POST",
+        url: "/TipoProductoes/List",
+        contentType: "application/json; charset=utf-8",
+        dataType: "html",
+        success: function (data) {
+            var resultado = JSON.parse(data);
+            $.each(resultado, function (key, registro) {
+                $("#selectTipoProducto").append('<option value=' + registro.id + '>' + registro.descripcion + '</option>');
             });
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });
 
+    function search() {
+        var viewModel = {
+            Descripcion: $("#txtDescr").val(),
+            TipoProducto: $("#selectTipoProducto").val()
+        };
+        $("#btnSearch").button("loading");
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=UTF-8",
+            url: "/Productoes/SearchMassiveEdit",
+            dataType: "html",
+            data: JSON.stringify(viewModel),
+            success: function (response) {
+                $('#list').html(response);
+                $("#btnSearch").button("reset");
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
         });
+    }
 
-
-    </script>
-}
+</script>

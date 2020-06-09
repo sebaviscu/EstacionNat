@@ -242,14 +242,26 @@ namespace MVCBlog.Website.Controllers
 
         public ActionResult MassiveEdit()
         {
-            var productos = db.Productoes.Include(p => p.TipoProducto);
+            //var productos = db.Productoes.Include(p => p.TipoProducto);
+
+            //foreach (var p in productos)
+            //{
+            //    p.Description = p.Description.Trim();
+            //}
+
+            return View();
+        }
+
+        public ActionResult SearchMassiveEdit(FiltroProductos viewModel)
+        {
+            var productos = GetProductsByFilter(viewModel);
 
             foreach (var p in productos)
             {
                 p.Description = p.Description.Trim();
             }
 
-            return View(productos);
+            return this.PartialView("_massiveEditList", productos);
         }
 
         [HttpPost]
@@ -393,6 +405,19 @@ namespace MVCBlog.Website.Controllers
             var fileDownloadName = descrFile + ".xlsx";
             const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             return File(fileBytes, contentType, fileDownloadName);
+        }
+
+        [HttpPost]
+        public JsonResult List()
+        {
+            var tipoProductos = db.Productoes.ToList();
+            var jsonResultd = tipoProductos.OrderBy(_ => _.Description).Select(_ => new
+            {
+                value = _.Id,
+                data = _.Description.Trim()
+            });
+
+            return Json(jsonResultd);
         }
     }
 }

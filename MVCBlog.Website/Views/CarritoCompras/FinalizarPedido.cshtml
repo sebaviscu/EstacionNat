@@ -21,7 +21,7 @@
             </dd>
             <br />
             <dd>
-                <strong>Numero: </strong>
+                <strong>Telefono: </strong>
                 @Html.DisplayFor(model => model.Usuario.PhoneNumber)
                 <div style="float:right; margin-right:20px;">
                     <button class="btn btn-default">
@@ -36,16 +36,16 @@
             <div>
                 <div style="margin-left:15px;">
                     <strong>Forma de Pago</strong>
-                    @Html.EnumDropDownListFor(modelItem => Model.FormaDePago, htmlAttributes: new { @class = "form-control colEstado" })
+                    @Html.EnumDropDownListFor(modelItem => Model.FormaDePago, htmlAttributes: new { @class = "form-control colEstado", @id = "inputFormaPago" })
                     @Html.ValidationMessageFor(modelItem => Model.FormaDePago, "", new { @class = "text-danger" })
                 </div>
                 <div>
                     <div class="col-md-6">
                         <strong>Hora de entrega</strong>
-                        @Html.EditorFor(modelItem => Model.HoraEntrega, new { htmlAttributes = new { @class = "form-control colDescr" } })
+                        @Html.EditorFor(modelItem => Model.HoraEntrega, new { htmlAttributes = new { @class = "form-control colDescr", @id = "inputHoraentrega" } })
                     </div>
                     <div class="col-md-6 checkbox">
-                        <label style="margin-top:10px;"><input type="checkbox" value="" id="loAntesPosible">Lo antes posible</label>
+                        <label style="margin-top:10px;"><input type="checkbox" value="" id="loAntesPosible" checked>Lo antes posible</label>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
         </div>
         <div class="col-md-4">
             <strong>Comentarios</strong>
-            @Html.TextAreaFor(modelItem => Model.Comentario, new { @class = "form-control", rows = "4" })
+            @Html.TextAreaFor(modelItem => Model.Comentario, new { @class = "form-control", rows = "4", @id = "inputComentario" })
         </div>
     </div>
 
@@ -91,16 +91,24 @@
                     </a>
                 </td>
                 <td>
-                    @item.Producto.Description
+                    <span>
+                        @item.Producto.Description
+                    </span>
                 </td>
                 <td>
-                    $ @item.Producto.PrecioActual
+                    <span>
+                        $ @item.Producto.PrecioActual
+                    </span>
                 </td>
                 <td>
-                    @item.Cantidad
+                    <span>
+                        @item.Cantidad
+                    </span>
                 </td>
                 <td>
-                    $ @item.TotalParcial
+                    <span>
+                        $ @item.TotalParcial
+                    </span>
                 </td>
             </tr>
         }
@@ -111,7 +119,7 @@
         </div>
         <div style="float:left">
             <button class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Blog")'">Seguir Comprando</button>
-            <button id="btnSave" class="btn btn-info" style="margin-left:15px;" onclick="TerminarPedido();">
+            <button id="btnSave" class="btn btn-info" style="margin-left:15px;" data-loading-text="Terminando Pedido" onclick="TerminarPedido();">
                 Terminar Pedido
                 <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
             </button>
@@ -122,27 +130,59 @@
 </html>
 
 
-<div class="modal fade" id="modalFinalizarPedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalFinalizarPedido" tabindex="-1" data-backdrop="static" data-keyboard="false"  >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="descripcionModal"></h3>
+                <h3>Pedido</h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body panelPrePredido" style="; display:block;">
+                <div class="form-inline col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>Nombre: &nbsp</label><span>
+                            @Html.DisplayFor(model => model.Usuario.FullName)
+                        </span>
+                        <label>Dirección: &nbsp</label><span>
+                            @Html.DisplayFor(model => model.Usuario.Address)
+                        </span>
+                        <label>Telefono: &nbsp</label><span>
+                            @Html.DisplayFor(model => model.Usuario.PhoneNumber)
+                        </span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Forma de Pago: &nbsp</label><span id="txtFormPago"></span>
+                        <label>Hora de entrega: &nbsp</label><span id="txtHoraEntrega"></span>
+                    </div>
+                </div>
 
-
-
-
-
-
+                <label>Comentarios: &nbsp</label><span id="txtComentario"></span>
+                <hr />
+                <table id="tablaProductos" class="table">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total PArcial</th>
+                    </tr>
+                </table>
+                <label style="font-size:20px; float:right">Total: $ <strong id="txtTotal">@Model.TotalCharge</strong></label>
             </div>
+
+            <div class="panel-body" id="panelPostPredido" style="display:none; text-align:center;">
+                <h1 style="color:red">COMPRA TERMINADA</h1>
+                <br />
+                <h3>Gracias por confiar en nosotros</h3>
+                <br />
+                <h4>Te enviaremos un mensaje para confirmar el pedido.</h4>
+            </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="btnSave" class="btn btn-success" style="margin-left:15px;" onclick="FinalizarPedido();">
-                    Finalizar Pedido
-                    <span class="glyphicon glyphicon-ok"></span>
-                </button>
+                <div>
+                    <button id="btnTerminar" class="btn btn-success panelPrePredido" style="margin-left:15px; display:block; float:right;" data-loading-text="Finalizando Pedido" onclick="FinalizarPedido();">
+                        Confirmar Pedido
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button type="button" style="float:left;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -153,9 +193,66 @@
 <script>
 
     function TerminarPedido() {
+        $("#btnSave").button("loading");
 
         $("#modalFinalizarPedido").modal("show");
 
+        var formPago = $("#inputFormaPago option:selected").text();
+        var horaEntrega = $("#inputHoraentrega").val();
+        if ($("#loAntesPosible").is(":checked")) {
+            horaEntrega = "Lo antes posible";
+        }
+        var comentario = $("#inputComentario").val();
+
+        $('#txtFormPago').text(formPago);
+        $('#txtHoraEntrega').text(horaEntrega);
+        $('#txtComentario').text(comentario);
+
+        $("#tablaProductos td").remove();
+
+        $(".rowPrdos").each(function (index) {
+            var description = $(this).children("td").eq(2).find('span').text();
+            var precio = $(this).children("td").eq(3).find('span').text();
+            var cant = $(this).children("td").eq(4).find('span').text();
+            var totParcial = $(this).children("td").eq(5).find('span').text();
+
+            $("#tablaProductos").append('<tr><td>' + description + '</td><td>' + cant + '</td><td> ' + totParcial + '</td></tr>');
+        })
+
+        $("#btnSave").button("reset");
+    }
+
+    function FinalizarPedido() {
+        $("#btnTerminar").button("loading");
+
+        let pedProd = {
+            idPedido : "@Model.Id",
+            FormaPago: $("#txtFormPago").text(),
+            HoraEntrega: $("#txtHoraEntrega").text(),
+            Comentario : $("#txtComentario").text()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/CarritoCompras/FinalizarPedido",
+            data: JSON.stringify(pedProd),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+
+                document.querySelectorAll(".panelPrePredido").forEach(function (element, index, array) {
+                    element.style.display = "none";
+                });
+                document.getElementById("panelPostPredido").style.removeProperty("display");
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
     }
 
 </script>

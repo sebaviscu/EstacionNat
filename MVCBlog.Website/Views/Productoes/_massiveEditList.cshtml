@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MVCBlog.Core.Entities.Producto>
+
+<table class="table col-md-12">
+    <tr>
+        <th>
+            Descripcion
+        </th>
+        <th>
+            Estado
+        </th>
+        <th>
+            Presentacion
+        </th>
+        <th>
+            Precio Actual
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="rowPrdos" id-prod="@item.Id">
+            <td>
+                @Html.EditorFor(modelItem => item.Description, new { htmlAttributes = new { @class = "form-control colDescr" } })
+            </td>
+            <td>
+                @Html.EnumDropDownListFor(modelItem => item.Estado, htmlAttributes: new { @class = "form-control colEstado" })
+                @Html.ValidationMessageFor(modelItem => item.Estado, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EnumDropDownListFor(modelItem => item.Unidad, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(modelItem => item.Unidad, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.PrecioActual, new { htmlAttributes = new { @class = "form-control colPrecio", @type = "number", min = "0", step = "1" } })
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="form-group">
+    @Html.ActionLink("Volver", "Index")
+    <button id="btnSave" class="btn btn-primary" onclick="Save();">Save</button>
+</div>
+
+
+<script type="text/javascript" src="~/Scripts/onlyNumeric.js"></script>
+<script>
+
+    function Save() {
+        var productosList = [];
+
+        $(".rowPrdos").each(function (index) {
+            var description = $(this).children("td").eq(0).find('input').val();
+            var estado = $(this).children("td").eq(1).find('select').val();
+            var unidad = $(this).children("td").eq(2).find('select').val();
+            var precioActual = $(this).children("td").eq(3).find('input').val();
+            var id = this.getAttribute("id-prod");
+
+            var item = {}
+            item["Id"] = id;
+            item["Description"] = description;
+            item["Estado"] = estado;
+            item["Unidad"] = unidad;
+            item["PrecioActual"] = precioActual;
+
+            productosList.push(item);
+        })
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=UTF-8",
+            url: "/Productoes/SaveMassiveEdit/",
+            dataType: "json",
+            data: JSON.stringify(productosList),
+            success: function (result) {
+                if (result.redirectUrl !== undefined) {
+                    window.location.replace(result.redirectUrl);
+                } else {
+                    alert("Error");
+                }
+            }
+        });
+    };
+</script>

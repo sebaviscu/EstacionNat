@@ -108,6 +108,7 @@ namespace MVCBlog.Website.Controllers
 
             model.UsuarioId = User.Identity.GetUserId();
             model.TiposProductos = db.TipoProductoes.ToList();
+            model.Productos = db.Productoes.ToList();
 
             return this.View(model);
         }

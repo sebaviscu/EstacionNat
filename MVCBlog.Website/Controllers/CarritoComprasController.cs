@@ -129,7 +129,7 @@ namespace MVCBlog.Website.Controllers
         public ActionResult RemoveProduct(Guid idProdPed)
         {
             var prodPed = db.PedidosProductos.Include(s => s.Pedido).Include(a => a.Producto).FirstOrDefault(_ => _.Id == idProdPed);
-            var listProductosPedido = db.PedidosProductos.Where(_ => _.PedidoId == prodPed.PedidoId).ToList();
+            var listProductosPedido = db.PedidosProductos.Include(a => a.Producto).Where(_ => _.PedidoId == prodPed.PedidoId).ToList();
 
             var pedido = prodPed.Pedido;
             listProductosPedido.Remove(prodPed);
@@ -164,7 +164,7 @@ namespace MVCBlog.Website.Controllers
             return this.PartialView("_Carrito", pedido);
         }
 
-        public ActionResult FinalizarPedido(Guid idPedido)
+        public ActionResult TerminarPedido(Guid idPedido)
         {
             var pedidoUser = db.Pedidoes.Include(s => s.Usuario).Where(_ => _.Id == idPedido && _.Estado == EstadoPedido.Creado).FirstOrDefault();
             if (pedidoUser != null)
@@ -181,5 +181,27 @@ namespace MVCBlog.Website.Controllers
 
             return this.PartialView("_Carrito", pedidoUser);
         }
+
+
+        public JsonResult FinalizarPedido(Guid idPedido, FormaDePago formaPago, string HoraEntrega, string Comentario)
+        {
+            var pedidoUser = db.Pedidoes.Include(s => s.Usuario).Where(_ => _.Id == idPedido && _.Estado == EstadoPedido.Creado).FirstOrDefault();
+            if (pedidoUser != null)
+            {
+                var listProductosPedido = db.PedidosProductos.Include(s => s.Producto).Where(_ => _.PedidoId == pedidoUser.Id).ToList();
+
+                pedidoUser.ProductosPedidos = listProductosPedido;
+                pedidoUser.FormaDePago = formaPago;
+                pedidoUser.HoraEntrega = HoraEntrega;
+                pedidoUser.Comentario = Comentario;
+                pedidoUser.Estado = EstadoPedido.Pendiente;
+                db.Entry(pedidoUser).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return Json(new { success = true });
+        }
+
     }
+
 }

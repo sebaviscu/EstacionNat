@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     @Styles.Render("~/css/combined")
     @RenderSection("HeaderContent", false)
-    <title>@Html.MvcSiteMap().SiteMapTitle() - Estacion Natural</title>
+    <title>Estacion Natural</title>
 
     <meta name="robots" content="index, follow" />
     <meta name="description" content="" />
@@ -30,11 +30,18 @@
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 @Html.MvcSiteMap().Menu("BootstrapMenuHelperModel")
-                <form method="get" class="navbar-form navbar-right" action="@Url.RouteUrl(MVCBlog.Website.Routes.DEFAULT, new { action = MVC.Blog.ActionNames.Index, controller = MVC.Blog.Name })">
-                    <div class="form-group">
-                        @Html.TextBox("search", null, new { placeholder = Common.Search, @class = "form-control" })
-                    </div>
-                </form>
+
+
+                @*<form method="get" class="navbar-form navbar-right" action="@Url.RouteUrl(MVCBlog.Website.Routes.DEFAULT, new { action = MVC.Blog.ActionNames.Index, controller = MVC.Blog.Name })">
+            <div class="form-group">
+                @Html.TextBox("search", null, new { placeholder = Common.Search, @class = "form-control" })
+            </div>
+        </form>*@
+
+                @{Html.RenderPartial(MVC.Shared.Views._LogonControl);}
+
+
+
             </div>
         </div>
     </div>
@@ -48,7 +55,7 @@
         @RenderSection("ScriptContent", false)
         <hr />
         <footer class="text-center">
-                @{Html.RenderPartial(MVC.Shared.Views._LogonControl);}
+                @*@{Html.RenderPartial(MVC.Shared.Views._LogonControl);}*@
         </footer>
     </div>
 </body>

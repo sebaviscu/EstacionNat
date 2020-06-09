@@ -16,6 +16,9 @@ namespace MVCBlog.Website.Models
         public bool BrowserRemembered { get; set; }
 
         public AspNetUser User { get; set; }
+
+        public List<Pedido> Pedidos { get; set; }
+
     }
 
     public class ManageLoginsViewModel

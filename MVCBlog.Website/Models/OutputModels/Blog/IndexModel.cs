@@ -14,5 +14,7 @@ namespace MVCBlog.Website.Models.OutputModels.Blog
         public List<TipoProducto> TiposProductos { get; set; }
 
         public List<PedidoProducto> ProductosPedidos { get; set; }
+
+        public List<Producto> Productos { get; set; } 
     }
 }
