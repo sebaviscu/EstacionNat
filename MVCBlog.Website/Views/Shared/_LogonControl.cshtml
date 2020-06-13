@@ -3,43 +3,36 @@
     <div style="float:right;">
         @if (Request.IsAuthenticated)
         {
-            @*@Html.ActionLink(@Common.Management, MVC.Administration.Index())
-            <text>|</text>
-            @Html.ActionLink(@Common.Logout, MVC.Login.Logout())*@
-
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">@User.Identity.Name <i class="glyphicon glyphicon-star" style="color:beige"></i></button>
+                <button onclick="myFunction()" class="dropbtn">@User.Identity.Name <span class="caret"></span></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="/Manage/Index">Mis Datos</a>
-                    <a href="/Pedidoes/ListaPedidos/?id=@User.Identity.GetUserId()"> Mis Pedidos</a>
+                    <a href="/Manage/Index"><i class="glyphicon glyphicon-user"></i>&nbsp; Mis Datos</a>
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                     {
                         @Html.AntiForgeryToken()
-                        <a href="javascript:document.getElementById('logoutForm').submit()">Cerrar Secion</a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="glyphicon glyphicon-off"></i>&nbsp; Cerrar Secion</a>
                     }
                 </div>
             </div>
         }
         else
         {
-            <a class="btn btn-success login" href="/Account/Login">Ingresar <i class="glyphicon glyphicon-user" style="color:beige"></i></a>
+            <a href="/Account/Register" style=" color: #f1f1f1; font-size: 16px; margin-right:20px; ">Registrate</a>
+            <a class="btn btn-success login" href="/Account/Login">Iniciar Sesión <i class="glyphicon glyphicon-user"></i></a>
         }
 
     </div>
 
-
 <style>
 
-        .login {
+    .login {
         margin-top: 5px;
         background-color: #2980B9;
         color: white;
         padding: 10px;
         font-size: 16px;
         cursor: pointer;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius: 10px;
+        border-radius: 15px;
     }
 
     .dropbtn {
@@ -50,9 +43,7 @@
         font-size: 16px;
         border: none;
         cursor: pointer;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius: 10px;
+        border-radius: 20px;
     }
 
         .dropbtn:hover, .dropbtn:focus {
@@ -92,13 +83,9 @@
 
 
 <script>
-    /* When the user clicks on the button,
-    toggle between hiding and showing the dropdown content */
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
     }
-
-    // Close the dropdown if the user clicks outside of it
     window.onclick = function (event) {
         if (!event.target.matches('.dropbtn')) {
             var dropdowns = document.getElementsByClassName("dropdown-content");

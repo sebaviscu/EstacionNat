@@ -10,7 +10,8 @@ namespace MVCBlog.Core.Entities
     {
         Creado,
         Pendiente,
-        Terminado
+        Terminado,
+        Cancelado
     }
 
     public enum EstadoProducto

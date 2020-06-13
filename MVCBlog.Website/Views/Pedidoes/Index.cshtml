@@ -47,14 +47,37 @@
                     @Html.DisplayFor(modelItem => item.Created)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
+                    @if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Creado)
+                    {
+                        <span style="font-size:14px;" class="label label-primary">@item.Estado</span>
+                    }
+                    else if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Pendiente)
+                    {
+                        <span style="font-size:14px;" class="label label-warning">@item.Estado</span>
+                    }
+                    else if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Terminado)
+                    {
+                        <span style="font-size:14px;" class="label label-success">@item.Estado</span>
+                    }
+                    else if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Cancelado)
+                    {
+                        <span style="font-size:14px;" class="label label-danger">@item.Estado</span>
+                    }
                 </td>
                 <td>
                     $ @Html.DisplayFor(modelItem => item.TotalCharge)
                 </td>
                 <td>
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                    @if (item.Estado != MVCBlog.Core.Entities.EstadoPedido.Terminado)
+                    {
+                        @Html.ActionLink("Terminar Pedido", "TerminarPedido", new { id = item.Id })
+                    }
+                    else
+                    {
+                        <span>----</span>
+                    }
                 </td>
             </tr>
         }

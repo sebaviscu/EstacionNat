@@ -86,6 +86,11 @@ namespace MVCBlog.Website.Models
         public string Email { get; set; }
 
         [Required()]
+        [EmailAddress()]
+        [Display(Name = nameof(Labels.PhoneNumber), ResourceType = typeof(Labels))]
+        public string PhoneNumber { get; set; }
+
+        [Required()]
         [StringLength(100, ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = nameof(Validation.LeastCharacters), MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = nameof(Labels.Password), ResourceType = typeof(Labels))]

@@ -113,10 +113,12 @@
             </tr>
         }
     </table>
+
+    <div style="float:right">
+        <label style="font-size:28px;">Total: $ @Model.TotalCharge</label>
+    </div>
+
     <div class="col-md-12">
-        <div style="float:right">
-            <label style="font-size:28px;">Total: $ @Model.TotalCharge</label>
-        </div>
         <div style="float:left">
             <button class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Blog")'">Seguir Comprando</button>
             <button id="btnSave" class="btn btn-info" style="margin-left:15px;" data-loading-text="Terminando Pedido" onclick="TerminarPedido();">
@@ -167,7 +169,7 @@
                 <label style="font-size:20px; float:right">Total: $ <strong id="txtTotal">@Model.TotalCharge</strong></label>
             </div>
 
-            <div class="panel-body" id="panelPostPredido" style="display:none; text-align:center;">
+            <div class="panel-body panelPostPredido"  style="display:none; text-align:center;">
                 <h1 style="color:red">COMPRA TERMINADA</h1>
                 <br />
                 <h3>Gracias por confiar en nosotros</h3>
@@ -176,12 +178,15 @@
             </div>
 
             <div class="modal-footer">
-                <div>
-                    <button id="btnTerminar" class="btn btn-success panelPrePredido" style="margin-left:15px; display:block; float:right;" data-loading-text="Finalizando Pedido" onclick="FinalizarPedido();">
+                <div class="panelPrePredido">
+                    <button id="btnTerminar" class="btn btn-success" style="margin-left:15px; display:block; float:right;" data-loading-text="Finalizando Pedido" onclick="FinalizarPedido();">
                         Confirmar Pedido
                         <span class="glyphicon glyphicon-ok"></span>
                     </button>
-                    <button type="button" style="float:left;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" style="float:left;" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+                <div class="panel-body panelPostPredido" style="display:none; text-align:center;">
+                    <button type="button" style="float:left;" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Manage")'" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -243,8 +248,10 @@
                 document.querySelectorAll(".panelPrePredido").forEach(function (element, index, array) {
                     element.style.display = "none";
                 });
-                document.getElementById("panelPostPredido").style.removeProperty("display");
 
+                document.querySelectorAll(".panelPostPredido").forEach(function (element, index, array) {
+                    element.style.removeProperty("display");
+                });
             },
             failure: function (response) {
                 alert(response.responseText);

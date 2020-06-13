@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace MVCBlog.Website.Controllers
@@ -34,7 +35,7 @@ namespace MVCBlog.Website.Controllers
 
         public ActionResult Grill(Guid? idTipoProd)
         {
-            var prods = db.Productoes.OfType<Producto>();
+            var prods = db.Productoes.OfType<Producto>().Where(_=>_.Estado == EstadoProducto.Disponible);
 
             if (idTipoProd.HasValue)
                 prods = prods.Where(_ => _.TipoProductoId == idTipoProd);
@@ -197,9 +198,39 @@ namespace MVCBlog.Website.Controllers
                 pedidoUser.Estado = EstadoPedido.Pendiente;
                 db.Entry(pedidoUser).State = EntityState.Modified;
                 db.SaveChanges();
+
+                //SendEmail();
             }
 
             return Json(new { success = true });
+        }
+
+        void SendEmail()
+        {
+            try
+            {
+                //Configuring webMail class to send emails  
+                //gmail smtp server  
+                WebMail.SmtpServer = "smtp.gmail.com";
+                //gmail port to send emails  
+                WebMail.SmtpPort = 587;
+                WebMail.SmtpUseDefaultCredentials = true;
+                //sending emails with secure protocol  
+                WebMail.EnableSsl = true;
+                //EmailId used to send emails from application  
+                WebMail.UserName = "YourGamilId@gmail.com";
+                WebMail.Password = "YourGmailPassword";
+
+                //Sender email address.  
+                WebMail.From = "SenderGamilId@gmail.com";
+
+                //Send email  
+                WebMail.Send(to: "", subject: "🍎🍌 Nuevo Pedido", body: "", null, null, isBodyHtml: true);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
     }

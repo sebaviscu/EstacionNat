@@ -6,7 +6,18 @@
 <div class="col-md-12">
 
     <div class="col-md-4">
-        <dt>@Common.Password:</dt>
+        <br />
+        <dt>Direccion</dt>
+        <dd>
+            @Model.User.Address
+        </dd>
+        <br />
+        <dt>Telefono</dt>
+        <dd>
+            @Model.User.PhoneNumber
+        </dd>
+        <br />
+        <dt>Contraseña</dt>
         <dd>
             [
             @if (Model.HasPassword)
@@ -21,8 +32,63 @@
         </dd>
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-offset-1 col-md-7 ">
+        <h3>Pedidos</h3>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>
+                    Creado
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Total
+                </th>
+            </tr>
 
+            @foreach (var item in Model.Pedidos)
+            {
+                if (item.Estado != MVCBlog.Core.Entities.EstadoPedido.Terminado)
+                {
+                }
+                else{
+                }
+                <tr>
+
+                    <td>
+                        <a data-toggle="tooltip" data-placement="left" title="Ver Pedido" href='@Url.Action("Details", "Pedidoes",new { id = item.Id})'>
+                            <i class="glyphicon glyphicon-list"></i>
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Creado)
+                        {
+                            <span style="font-size:15px;" class="label label-primary">@item.Estado</span>
+                        }
+                        else if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Pendiente)
+                        {
+                            <span style="font-size:15px;" class="label label-warning">@item.Estado</span>
+                        }
+                        else if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Terminado)
+                        {
+                            <span style="font-size:15px;" class="label label-success">@item.Estado</span>
+                        }
+                        else if (item.Estado == MVCBlog.Core.Entities.EstadoPedido.Cancelado)
+                        {
+                            <span style="font-size:14px;" class="label label-danger">@item.Estado</span>
+                        }
+                    </td>
+                    <td>
+                        $ @Html.DisplayFor(modelItem => item.TotalCharge)
+                    </td>
+                </tr>
+            }
+        </table>
 
     </div>
 

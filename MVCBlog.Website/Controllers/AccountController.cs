@@ -167,6 +167,7 @@ namespace MVCBlog.Website.Controllers
                     UserName = model.UserName.Trim(),
                     FirstName = model.FirstName.Trim(),
                     LastName = model.LastName.Trim(),
+                    PhoneNumber = model.PhoneNumber.Trim(),
                     Email = model.Email.Trim(),
                     ProvinceId = new Guid(ConfigurationManager.AppSettings["Provincia"]),
                     LocalityId = new Guid(ConfigurationManager.AppSettings["Localidad"]),

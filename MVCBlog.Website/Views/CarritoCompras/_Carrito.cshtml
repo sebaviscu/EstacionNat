@@ -1,6 +1,6 @@
 ﻿@model MVCBlog.Core.Entities.Pedido
 
-@if (Model.ProductosPedidos.Any())
+@if (Model != null && Model.ProductosPedidos.Any())
 {
     <table class="table table-condensed table-hover" id="discountTable">
         <thead>

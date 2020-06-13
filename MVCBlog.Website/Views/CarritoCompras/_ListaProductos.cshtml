@@ -24,14 +24,20 @@ else
                                 <span class="price" style="text-align: left;">$ @p.PrecioActual</span><strong style="font-size:14px">/@presentacion</strong>
                             </div>
                             <h4 style="text-align: left;"><small>@p.Description</small></h4>
-                            <div><button type="button" class="btn btn-main btn-xs text-uppercase btnAddProduct" data-id="@p.Id" onclick="AddProduct(this);"><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
+                            if (Request.IsAuthenticated)
+                            {
+                                <div><button type="button" class="btn btn-main btn-xs text-uppercase btnAddProduct" data-id="@p.Id" onclick="AddProduct(this);"><i class="glyphicon glyphicon-shopping-cart"></i> Agregar </button></div>
+                            }
                         }
                         else
                         {
                             <br />
-                            <h4 style="text-align: center;"><small>@p.Description</small></h4>
+                            <h4 style="text-align: left;"><small>@p.Description</small></h4>
                             <br />
-                            <span class="label label-danger">No disponible</span>
+                            if (Request.IsAuthenticated)
+                            {
+                                <span class="label label-danger">No disponible</span>
+                            }
                         }
                     }
                 </div>

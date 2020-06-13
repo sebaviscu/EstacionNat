@@ -5,20 +5,11 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <h1>Lista de Pedidos</h1>
 </head>
 <body>
     <table class="table">
         <tr>
-            @*<th>
-                Usuario
-            </th>
-            <th>
-                Telefono
-            </th>
-            <th>
-                Direccion
-            </th>*@
             <th>
                 Creado
             </th>
@@ -34,15 +25,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Usuario.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.Address)
-                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Created)
                 </td>

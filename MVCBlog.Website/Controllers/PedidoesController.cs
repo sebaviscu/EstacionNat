@@ -130,5 +130,22 @@ namespace MVCBlog.Website.Controllers
 
             return View(pedidos.ToList());
         }
+
+        public ActionResult TerminarPedido(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Pedido pedido = db.Pedidoes.Find(id);
+            if (pedido != null)
+            {
+                pedido.Estado = EstadoPedido.Terminado;
+                db.Entry(pedido).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
