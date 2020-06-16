@@ -71,10 +71,6 @@ namespace MVCBlog.Website.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
-                //PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                //TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                //Logins = await UserManager.GetLoginsAsync(userId),
-                //BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 User = user,
                 Pedidos = pedidos
             };
@@ -337,6 +333,37 @@ namespace MVCBlog.Website.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(string idUser, string newPhone, string newAddress, string newEmail)
+        {
+            var user = db.AspNetUsers.FirstOrDefault(_ => _.Id == idUser);
+
+            if (!string.IsNullOrEmpty(newPhone)) user.PhoneNumber = newPhone;
+            if (!string.IsNullOrEmpty(newAddress)) user.Address = newAddress;
+            if (!string.IsNullOrEmpty(newEmail)) user.Email = newEmail;
+
+            user.Modified = DateTime.Now;
+            user.ModifiedUser = User.Identity.Name;
+
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return Json(new { successful = true });
+        }
+
+        [HttpPost]
+        public JsonResult GetUserName()
+        {
+            var fullName = string.Empty;
+            if (User.Identity.IsAuthenticated)
+            {
+                var idUser = User.Identity.GetUserId();
+                var user = db.AspNetUsers.FirstOrDefault(_ => _.Id == idUser);
+                fullName = user != null ? user.FullName : string.Empty;
+            }
+            return Json(new { fullName });
         }
 
         #region Helpers

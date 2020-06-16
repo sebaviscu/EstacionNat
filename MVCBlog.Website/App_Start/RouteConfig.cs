@@ -26,34 +26,11 @@ namespace MVCBlog.Website
                 "Logout",
                 new { controller = MVC.Login.Name, action = MVC.Login.ActionNames.Logout });
 
-            routes.MapRoute(
-                Routes.BLOGENTRY,
-                MVC.Blog.Name + "/{year}/{month}/{day}/{id}",
-                new { controller = MVC.Blog.Name, action = MVC.Blog.ActionNames.Entry },
-                new { year = "\\d{4}", month = "\\d{1,2}", day = "\\d{1,2}", id = ".+" });
-
-            routes.MapRoute(
-                Routes.TAGPAGING,
-               MVC.Blog.Name + "/Tag/{tag}/Page/{page}",
-               new { controller = MVC.Blog.Name, action = MVC.Blog.ActionNames.Index },
-               new { tag = ".+", page = "\\d+" });
-
-            routes.MapRoute(
-               Routes.TAG,
-               MVC.Blog.Name + "/Tag/{tag}",
-               new { controller = MVC.Blog.Name, action = MVC.Blog.ActionNames.Index },
-               new { tag = ".+" });
-
-            routes.MapRoute(
-               Routes.BLOGPAGING,
-               MVC.Blog.Name + "/Page/{page}",
-               new { controller = MVC.Blog.Name, action = MVC.Blog.ActionNames.Index },
-               new { page = "\\d+" });
-
+           
             routes.MapRoute(
                 Routes.DEFAULT,
                 "{controller}/{action}/{id}",
-                new { controller = MVC.Blog.Name, action = MVC.Blog.ActionNames.Index, id = UrlParameter.Optional });
+                new { controller = "CarritoCompras", action = "Index", id = UrlParameter.Optional });
         }
     }
 }

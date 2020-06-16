@@ -24,7 +24,7 @@
                 <strong>Telefono: </strong>
                 @Html.DisplayFor(model => model.Usuario.PhoneNumber)
                 <div style="float:right; margin-right:20px;">
-                    <button class="btn btn-default">
+                    <button class="btn btn-default" onclick="EditarUsuario();">
                         <span class="glyphicon glyphicon-edit btn-xs"></span>
                         Editar
                     </button>
@@ -132,7 +132,7 @@
 </html>
 
 
-<div class="modal fade" id="modalFinalizarPedido" tabindex="-1" data-backdrop="static" data-keyboard="false"  >
+<div class="modal fade" id="modalFinalizarPedido" tabindex="-1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -169,7 +169,7 @@
                 <label style="font-size:20px; float:right">Total: $ <strong id="txtTotal">@Model.TotalCharge</strong></label>
             </div>
 
-            <div class="panel-body panelPostPredido"  style="display:none; text-align:center;">
+            <div class="panel-body panelPostPredido" style="display:none; text-align:center;">
                 <h1 style="color:red">COMPRA TERMINADA</h1>
                 <br />
                 <h3>Gracias por confiar en nosotros</h3>
@@ -195,7 +195,71 @@
 
 
 
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Datos Personales</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Usuario.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10" style="margin-bottom:10px">
+                        @Html.EditorFor(model => model.Usuario.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "newPhone" } })
+                        @Html.ValidationMessageFor(model => model.Usuario.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Usuario.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10" style="margin-bottom:10px">
+                        @Html.EditorFor(model => model.Usuario.Address, new { htmlAttributes = new { @class = "form-control", @id = "newAddress" } })
+                        @Html.ValidationMessageFor(model => model.Usuario.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnAddProd" onclick="btnActualizarUsuario();">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
+    function EditarUsuario() {
+        $("#modalEditarUsuario").modal("show");
+    }
+
+    function btnActualizarUsuario() {
+
+        var newPhone = $("#newPhone").val();
+        var newAddress = $("#newAddress").val();
+
+        let usuario = {
+            idUser : "@Model.Usuario.Id",
+            newPhone,
+            newAddress,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Manage/Edit",
+            data: JSON.stringify(usuario),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                window.location.reload();
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
 
     function TerminarPedido() {
         $("#btnSave").button("loading");

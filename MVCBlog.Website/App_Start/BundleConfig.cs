@@ -24,7 +24,6 @@ namespace MVCBlog.Website
                     "~/Scripts/jquery.unobtrusive-ajax.js"));
 
 
-
             bundles.Add(new StyleBundle("~/css/combined")
                 .Include(
                     "~/Content/bootstrap.css",
@@ -32,7 +31,8 @@ namespace MVCBlog.Website
                     "~/Content/shCoreDefault.css",
                     "~/Content/custom.css",
                     "~/Content/lightbox.css",
-                    "~/Content/jquery.autocomplete.css"));
+                    "~/Content/jquery.autocomplete.css",
+                    "~/Content/bootstrap-select.min.css"));
         }
     }
 }

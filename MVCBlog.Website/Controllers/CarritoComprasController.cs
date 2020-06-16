@@ -2,6 +2,7 @@
 using MVCBlog.Core.Database;
 using MVCBlog.Core.Entities;
 using MVCBlog.Website.Models;
+using MVCBlog.Website.Models.OutputModels.Blog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,22 +17,16 @@ namespace MVCBlog.Website.Controllers
     {
         private DatabaseContext db = new DatabaseContext();
 
-        private readonly IRepository repository;
-
-
-        // GET: CarritoCompras
-        public ActionResult Index()
+        public virtual ActionResult Index()
         {
-            var productos = db.Productoes.ToList();
+            var model = new IndexModel();
 
-            var prodViewModel = new ProductosViewModel()
-            {
-                Productos = productos
-            };
-
-            return View(prodViewModel);
+            model.UsuarioId = User.Identity.GetUserId();
+            model.TiposProductos = db.TipoProductoes.ToList();
+            model.Productos = db.Productoes.ToList();
+            ViewBag.PossibleCC = model.Productos;
+            return View(model);
         }
-
 
         public ActionResult Grill(Guid? idTipoProd)
         {

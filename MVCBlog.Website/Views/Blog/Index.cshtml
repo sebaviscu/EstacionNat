@@ -15,7 +15,13 @@
         <h3 id="carritoUsuario" usuario-id="@Model.UsuarioId" class="side-heading"><i class="fa fa-shopping-cart"></i> Mi carrito</h3>
         <div id="carritoPartialView"></div>
         <hr>
-  
+        @Html.DropDownListFor(model => model.Productos, ((IEnumerable<MVCBlog.Core.Entities.Producto>)ViewBag.PossibleCC).Select(option => new SelectListItem
+        {
+        Text = String.Format("{0}", option.Description),
+        Value = option.Id.ToString(),
+        }), "Todos", new { @class = "selectpicker", @data_live_search = "true" })
+        <hr>
+
         <h3 class="side-heading">Categorías</h3>
         <div class="list-group">
 
@@ -32,6 +38,8 @@
     </div>
 
     <div class="col-md-9">
+
+
         <div>
             <div id="list"></div>
         </div>
@@ -39,8 +47,12 @@
 
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-select.min.js"></script>
 
     <script type="text/javascript">
+
+        $('.my-select').selectpicker();
+
 
         $.ajax({
             type: "POST",

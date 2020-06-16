@@ -36,9 +36,18 @@
                 @Html.DisplayFor(modelItem => item.Modified)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "TipoProductoes", new { id = item.Id })'">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                    Editar
+                </button>
+                <button type="button" class="btn btn-info btn-sm" onclick="location.href='@Url.Action("Details", "TipoProductoes", new { id = item.Id })'">
+                    <i class="glyphicon glyphicon-list-alt"></i>
+                    Detalles
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Delete", "TipoProductoes", new { id = item.Id })'">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    Eliminar
+                </button>
             </td>
         </tr>
     }

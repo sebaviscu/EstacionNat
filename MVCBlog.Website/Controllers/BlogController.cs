@@ -99,17 +99,12 @@ namespace MVCBlog.Website.Controllers
         [ValidateInput(false)]
         public virtual ActionResult Index(string tag, string search, int? page)
         {
-            //var entries = this.GetAll(
-            //    tag,
-            //    search,
-            //    new Paging(page.GetValueOrDefault(1), ENTRIESPERPAGE, PropertyResolver.GetPropertyName<BlogEntry>(b => b.PublishDate), SortDirection.Descending));
-
             var model = new IndexModel();
 
             model.UsuarioId = User.Identity.GetUserId();
             model.TiposProductos = db.TipoProductoes.ToList();
             model.Productos = db.Productoes.ToList();
-
+            ViewBag.PossibleCC = model.Productos;
             return this.View(model);
         }
 

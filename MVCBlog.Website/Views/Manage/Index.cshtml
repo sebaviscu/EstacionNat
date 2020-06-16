@@ -1,24 +1,34 @@
 ﻿@model MVCBlog.Website.Models.IndexViewModel
 
-<div class="">
-    <h3>@Model.User.FullName</h3>
-</div>
-<div class="col-md-12">
-
-    <div class="col-md-4">
-        <br />
-        <dt>Direccion</dt>
+<h3>@Model.User.FullName</h3>
+<div>
+    <br />
+    <div class="col-md-5" style="padding: 15px; border: 1px solid #e0e0e0;        border-radius: 5px;">
         <dd>
+            <strong>Dirección: </strong>
             @Model.User.Address
+            <div style="float: right; margin-right: 20px; ">
+                <button class="btn btn-default" onclick="EditarUsuario();">
+                    <span class="glyphicon glyphicon-edit btn-xs"></span>
+                    Editar
+                </button>
+            </div>
         </dd>
         <br />
-        <dt>Telefono</dt>
         <dd>
+            <strong>Telefono: </strong>
             @Model.User.PhoneNumber
+
         </dd>
         <br />
-        <dt>Contraseña</dt>
         <dd>
+            <strong>Email: </strong>
+            @Model.User.Email
+
+        </dd>
+        <br />
+        <dd>
+            <strong>Contraseña: </strong>
             [
             @if (Model.HasPassword)
             {
@@ -32,7 +42,7 @@
         </dd>
     </div>
 
-    <div class="col-md-offset-1 col-md-7 ">
+    <div class="col-md-offset-1 col-md-6 ">
         <h3>Pedidos</h3>
         <table class="table">
             <tr>
@@ -48,12 +58,13 @@
                 </th>
             </tr>
 
-            @foreach (var item in Model.Pedidos)
+            @foreach (var item in Model.Pedidos.OrderByDescending(_ => _.Created))
             {
                 if (item.Estado != MVCBlog.Core.Entities.EstadoPedido.Terminado)
                 {
                 }
-                else{
+                else
+                {
                 }
                 <tr>
 
@@ -89,7 +100,83 @@
                 </tr>
             }
         </table>
-
     </div>
-
 </div>
+
+
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Datos Personales</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.User.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10" style="margin-bottom:10px">
+                        @Html.EditorFor(model => model.User.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "newPhone" } })
+                        @Html.ValidationMessageFor(model => model.User.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.User.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10" style="margin-bottom:10px">
+                        @Html.EditorFor(model => model.User.Address, new { htmlAttributes = new { @class = "form-control", @id = "newAddress" } })
+                        @Html.ValidationMessageFor(model => model.User.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.User.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", @id = "newEmail" } })
+                        @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnAddProd" onclick="btnActualizarUsuario();">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function EditarUsuario() {
+
+        $("#modalEditarUsuario").modal("show");
+    }
+
+    function btnActualizarUsuario() {
+
+        var newPhone = $("#newPhone").val();
+        var newAddress = $("#newAddress").val();
+        var newEmail = $("#newEmail").val();
+
+        let usuario = {
+            idUser : "@Model.User.Id",
+            newPhone,
+            newAddress,
+            newEmail
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Manage/Edit",
+            data: JSON.stringify(usuario),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                window.location.reload();
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

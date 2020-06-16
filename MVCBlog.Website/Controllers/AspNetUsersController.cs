@@ -297,14 +297,14 @@ namespace MVCBlog.Website.Controllers
                     if (!isDisabled && aspNetUser.State == AspNetUserState.Disabled && aspNetUser.UserNumber != null)
                     {
                         DateTime currentPeriod = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                      
+
                         DateTime lastPeriod = SiteMethods.GetFirstDayOfMonth(Convert.ToDateTime(aspNetUser.Modified));
-                     
+
                         if (lastPeriod != currentPeriod)
                         {
                             while (lastPeriod <= currentPeriod)
                             {
-                              
+
                                 await repository.SaveChangesAsync();
 
                                 lastPeriod = lastPeriod.AddMonths(1);
@@ -505,5 +505,7 @@ namespace MVCBlog.Website.Controllers
             const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             return File(fileBytes, contentType, fileDownloadName);
         }
+
+      
     }
 }
